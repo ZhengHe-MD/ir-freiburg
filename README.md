@@ -5,7 +5,7 @@ my playlist, as usual. Recently, I've just got started to work with ElasticSearc
 So I take out this course from my playlist, and it turns out to be a great course.   
 
 All original materials are collected from GitHub and the course website, and I rewrite them using Go because
-I use Go for my daily work. If you found it useful, feel free to do anything.
+I use it for my daily work. If you found this repo useful, feel free to fork and do anything.
 
 ## References
 * [course website](https://ad-wiki.informatik.uni-freiburg.de/teaching/InformationRetrievalWS1718)
