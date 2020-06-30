@@ -18,3 +18,4 @@ In-class demo and exercise code can be found in [lecture-01 directory](./lecture
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
 * [exercises](https://github.com/eamsen/ir-edu)
 * [lecture codes](https://github.com/numairmansur/InformationRetrival)
+* textbooks: [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/information-retrieval-book.html)
