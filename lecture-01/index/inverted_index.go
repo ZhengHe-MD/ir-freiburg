@@ -72,6 +72,8 @@ func (ii *InvertedIndex) ProcessQuery(query string) (docIDList []int, err error)
 	return
 }
 
+// MultiMerge merge an arbitrary number of sorted lists.
+// TODO: use priority queue to find minimum element.
 func MultiMerge(lists ...[]int) (ret []int) {
 	var idxList = make([]int, len(lists))
 	var upperBoundList = make([]int, len(lists))

@@ -11,7 +11,7 @@ func TestInvertedIndex_ReIndexFromFile(t *testing.T) {
 		wantInvertedLists map[string][]int
 	}{
 		{
-			"../fixtures.txt",
+			"../example.txt",
 			map[string][]int{
 				"document": {1, 2, 3},
 				"first":    {1},
@@ -63,8 +63,8 @@ func TestInvertedIndex_ProcessQuery(t *testing.T) {
 		wantDocIDList []int
 		wantErr       error
 	}{
-		{"../fixtures.txt", "document", []int{1, 2, 3}, nil},
-		{"../fixtures.txt", "document third", []int{3}, nil},
+		{"../example.txt", "document", []int{1, 2, 3}, nil},
+		{"../example.txt", "document third", []int{3}, nil},
 	}
 
 	for _, tt := range tests {
