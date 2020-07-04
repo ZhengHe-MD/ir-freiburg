@@ -7,7 +7,7 @@ my playlist, as usual. Recently, I've just got started to work with ElasticSearc
 So I take out this course from my playlist, and it turns out to be a great course.   
 
 All original materials are collected from GitHub and the course website, and I rewrite them using Go because
-I use it for my daily work. If you found this repo useful, feel free to fork and do anything.
+I use it for my daily work. If you found this repo useful, feel free to fork and play around. 
 
 ## Details
 
