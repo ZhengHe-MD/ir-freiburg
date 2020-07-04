@@ -10,10 +10,10 @@ import (
 const epsilon = 0.001
 
 func TestReadBenchmark(t *testing.T) {
-	tests := []struct{
+	tests := []struct {
 		givenFilename string
 		wantBenchmark map[string]map[int64]interface{}
-	} {
+	}{
 		{
 			"example-benchmark.txt",
 			map[string]map[int64]interface{}{
@@ -38,12 +38,12 @@ func TestReadBenchmark(t *testing.T) {
 }
 
 func TestPrecisionAtK(t *testing.T) {
-	tests := []struct{
-		givenResultIds []int64
+	tests := []struct {
+		givenResultIds   []int64
 		givenRelevantIds map[int64]interface{}
-		givenK int
+		givenK           int
 		wantRetPrecision float64
-	} {
+	}{
 		{
 			[]int64{5, 3, 6, 1, 2},
 			map[int64]interface{}{
@@ -102,16 +102,16 @@ func TestPrecisionAtK(t *testing.T) {
 }
 
 func TestAveragePrecision(t *testing.T) {
-	tests := []struct{
-		givenResultIds []int64
+	tests := []struct {
+		givenResultIds   []int64
 		givenRelevantIds map[int64]interface{}
-		wantAP float64
+		wantAP           float64
 	}{
 		{
 			[]int64{7, 17, 9, 42, 5},
 			map[int64]interface{}{
-				5: struct{}{},
-				7: struct{}{},
+				5:  struct{}{},
+				7:  struct{}{},
 				12: struct{}{},
 				42: struct{}{},
 			},
@@ -126,13 +126,13 @@ func TestAveragePrecision(t *testing.T) {
 }
 
 func TestEvaluate(t *testing.T) {
-	tests := []struct{
-		givenFilename string
+	tests := []struct {
+		givenFilename          string
 		givenBenchmarkFilename string
-		givenBM25B float64
-		givenBM25K float64
-		wantMPS MPS
-	} {
+		givenBM25B             float64
+		givenBM25K             float64
+		wantMPS                MPS
+	}{
 		{
 			"example.txt", "example-benchmark.txt",
 			0.75, 1.25,
@@ -142,15 +142,15 @@ func TestEvaluate(t *testing.T) {
 
 	for _, tt := range tests {
 		ii := index.NewInvertedIndex()
-		err := ii.ReIndexFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K)
+		err := ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K)
 		assert.NoError(t, err)
 
 		benchmark, err := readBenchmark(tt.givenBenchmarkFilename)
 		assert.NoError(t, err)
 
-		mps := Evaluate(ii, benchmark, false)
-		assert.True(t, math.Abs(tt.wantMPS.MPAt3 - mps.MPAt3) <= epsilon)
-		assert.True(t, math.Abs(tt.wantMPS.MPAtR - mps.MPAtR) <= epsilon)
-		assert.True(t, math.Abs(tt.wantMPS.MAP - mps.MAP) <= epsilon)
+		mps := Evaluate(*ii, benchmark, false)
+		assert.True(t, math.Abs(tt.wantMPS.MPAt3-mps.MPAt3) <= epsilon)
+		assert.True(t, math.Abs(tt.wantMPS.MPAtR-mps.MPAtR) <= epsilon)
+		assert.True(t, math.Abs(tt.wantMPS.MAP-mps.MAP) <= epsilon)
 	}
 }

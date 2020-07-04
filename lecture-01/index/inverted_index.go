@@ -14,40 +14,41 @@ var (
 
 // thread safety is not guaranteed
 type InvertedIndex struct {
-	invertedLists map[string][]int
-	docs          map[int]string
+	invertedLists map[string][]int64
+	docs          map[int64]string
 }
 
-func NewInvertedIndex() InvertedIndex {
-	return InvertedIndex{
-		invertedLists: make(map[string][]int),
-		docs:          make(map[int]string),
+func NewInvertedIndex() *InvertedIndex {
+	return &InvertedIndex{
+		invertedLists: make(map[string][]int64),
+		docs:          make(map[int64]string),
 	}
 }
 
-func (ii InvertedIndex) GetInvertedLists() map[string][]int {
+func (ii *InvertedIndex) GetInvertedLists() map[string][]int64 {
 	return ii.invertedLists
 }
 
-func (ii InvertedIndex) GetDocByID(id int) string {
+func (ii *InvertedIndex) GetDocByID(id int64) string {
 	return ii.docs[id]
 }
 
-func (ii InvertedIndex) ReIndexFromFile(filename string) (err error) {
+func (ii *InvertedIndex) ReadFromFile(filename string) (err error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return
 	}
 	defer f.Close()
 
-	invertedList := make(map[string][]int)
+	invertedList := make(map[string][]int64)
+	docs := make(map[int64]string)
 
 	scanner := bufio.NewScanner(f)
-	docID := 0
+	docID := int64(0)
 	for scanner.Scan() {
 		docID += 1
 		line := scanner.Text()
-		ii.docs[docID] = line
+		docs[docID] = line
 		words := nonAlphaCharRegex.Split(line, -1)
 		for _, word := range words {
 			word = strings.ToLower(word)
@@ -59,12 +60,13 @@ func (ii InvertedIndex) ReIndexFromFile(filename string) (err error) {
 	}
 
 	ii.invertedLists = invertedList
+	ii.docs = docs
 	return
 }
 
-func (ii *InvertedIndex) ProcessQuery(query string) (docIDList []int, err error) {
+func (ii *InvertedIndex) ProcessQuery(query string) (docIDList []int64, err error) {
 	words := nonAlphaCharRegex.Split(query, -1)
-	lists := make([][]int, len(words))
+	lists := make([][]int64, len(words))
 	for i, word := range words {
 		lists[i] = ii.invertedLists[word]
 	}
@@ -74,7 +76,7 @@ func (ii *InvertedIndex) ProcessQuery(query string) (docIDList []int, err error)
 
 // MultiMerge merge an arbitrary number of sorted lists.
 // TODO: use priority queue to find minimum element.
-func MultiMerge(lists ...[]int) (ret []int) {
+func MultiMerge(lists ...[]int64) (ret []int64) {
 	var idxList = make([]int, len(lists))
 	var upperBoundList = make([]int, len(lists))
 
@@ -91,7 +93,8 @@ func MultiMerge(lists ...[]int) (ret []int) {
 
 	var lastAdvancedIdx int
 	for checkInBound(lastAdvancedIdx) {
-		var prevVal, minVal, minIdx = 0, math.MaxInt32, 0
+		var prevVal, minVal int64 = 0, math.MaxInt64
+		var minIdx = 0
 		var equal = true
 		for i := 0; i < len(lists); i++ {
 			val := lists[i][idxList[i]]

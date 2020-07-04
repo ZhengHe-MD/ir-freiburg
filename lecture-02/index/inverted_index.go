@@ -32,18 +32,18 @@ type InvertedIndex struct {
 	docs          map[int64]Doc
 }
 
-func NewInvertedIndex() InvertedIndex {
-	return InvertedIndex{
+func NewInvertedIndex() *InvertedIndex {
+	return &InvertedIndex{
 		invertedLists: make(map[string][]Posting),
 		docs:          make(map[int64]Doc),
 	}
 }
 
-func (ii InvertedIndex) GetInvertedLists() map[string][]Posting {
+func (ii *InvertedIndex) GetInvertedLists() map[string][]Posting {
 	return ii.invertedLists
 }
 
-func (ii InvertedIndex) GetDocByID(id int64) Doc {
+func (ii *InvertedIndex) GetDocByID(id int64) Doc {
 	return ii.docs[id]
 }
 
@@ -67,7 +67,7 @@ func (ii InvertedIndex) GetDocByID(id int64) Doc {
 // On reading the file, use UTF-8 as the standard encoding. To split the
 // texts into words, use the method introduced in the lecture. Make sure that
 // you ignore empty words.
-func (ii *InvertedIndex) ReIndexFromFile(filename string, bm25B, bm25K float64) (err error) {
+func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64) (err error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return
@@ -75,6 +75,7 @@ func (ii *InvertedIndex) ReIndexFromFile(filename string, bm25B, bm25K float64) 
 	defer f.Close()
 
 	invertedList := make(map[string][]Posting)
+	docs := make(map[int64]Doc)
 
 	scanner := bufio.NewScanner(f)
 	docID, docLenSum := int64(0), 0
@@ -101,7 +102,7 @@ func (ii *InvertedIndex) ReIndexFromFile(filename string, bm25B, bm25K float64) 
 			Raw: line,
 			DL:  docLen,
 		}
-		ii.docs[docID] = doc
+		docs[docID] = doc
 
 		for word, count := range wordCount {
 			if _, ok := invertedList[word]; !ok {
@@ -122,7 +123,7 @@ func (ii *InvertedIndex) ReIndexFromFile(filename string, bm25B, bm25K float64) 
 			// BM25 = tf * (k+1) / (k * (1 - b + b * DL / AVDL) + tf) * log2(N/df)
 			tf := posting.BM25
 
-			var dl = float64(ii.docs[posting.DocID].DL)
+			var dl = float64(docs[posting.DocID].DL)
 			idf := math.Log2(docNum / float64(len(postings)))
 			if math.IsInf(bm25K, 1) {
 				postings[i].BM25 = tf / (1 - bm25B + bm25B*dl/avdl) * idf
@@ -133,6 +134,7 @@ func (ii *InvertedIndex) ReIndexFromFile(filename string, bm25B, bm25K float64) 
 	}
 
 	ii.invertedLists = invertedList
+	ii.docs = docs
 	return
 }
 

@@ -16,7 +16,7 @@ func main() {
 	filename, query := os.Args[1], os.Args[2]
 
 	ii := index.NewInvertedIndex()
-	err := ii.ReIndexFromFile(filename)
+	err := ii.ReadFromFile(filename)
 	if err != nil {
 		fmt.Println(err)
 		return
