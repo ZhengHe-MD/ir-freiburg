@@ -47,6 +47,7 @@ func (ii *InvertedIndex) ReadFromFile(filename string) (err error) {
 	docID := int64(0)
 	for scanner.Scan() {
 		docID += 1
+
 		line := scanner.Text()
 		docs[docID] = line
 		words := nonAlphaCharRegex.Split(line, -1)

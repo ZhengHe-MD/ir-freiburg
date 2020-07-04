@@ -31,7 +31,7 @@ func TestReadBenchmark(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		queryDocs, err := readBenchmark(tt.givenFilename)
+		queryDocs, err := ReadBenchmark(tt.givenFilename)
 		assert.NoError(t, err)
 		assert.Equal(t, tt.wantBenchmark, queryDocs)
 	}
@@ -145,10 +145,10 @@ func TestEvaluate(t *testing.T) {
 		err := ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K)
 		assert.NoError(t, err)
 
-		benchmark, err := readBenchmark(tt.givenBenchmarkFilename)
+		benchmark, err := ReadBenchmark(tt.givenBenchmarkFilename)
 		assert.NoError(t, err)
 
-		mps := Evaluate(*ii, benchmark, false)
+		mps := Evaluate(ii, benchmark, false)
 		assert.True(t, math.Abs(tt.wantMPS.MPAt3-mps.MPAt3) <= epsilon)
 		assert.True(t, math.Abs(tt.wantMPS.MPAtR-mps.MPAtR) <= epsilon)
 		assert.True(t, math.Abs(tt.wantMPS.MAP-mps.MAP) <= epsilon)

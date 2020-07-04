@@ -15,7 +15,7 @@ type MPS struct {
 	MAP   float64
 }
 
-func Evaluate(ii index.InvertedIndex, benchmark map[string]map[int64]interface{}, useRefinements bool) (mps MPS) {
+func Evaluate(ii *index.InvertedIndex, benchmark map[string]map[int64]interface{}, useRefinements bool) (mps MPS) {
 	var PAt3SoFar, PAtRSoFar, APSoFar float64
 
 	for query, relevantIds := range benchmark {
@@ -77,7 +77,7 @@ func AveragePrecision(resultIds []int64, relevantIds map[int64]interface{}) (ap 
 	return
 }
 
-func readBenchmark(filename string) (benchmark map[string]map[int64]interface{}, err error) {
+func ReadBenchmark(filename string) (benchmark map[string]map[int64]interface{}, err error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return
