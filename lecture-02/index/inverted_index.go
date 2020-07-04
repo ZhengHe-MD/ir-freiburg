@@ -16,7 +16,7 @@ var (
 )
 
 type Posting struct {
-	DocID int
+	DocID int64
 	BM25  float64
 }
 
@@ -29,21 +29,21 @@ type Doc struct {
 // thread safety is not guaranteed
 type InvertedIndex struct {
 	invertedLists map[string][]Posting
-	docs          map[int]Doc
+	docs          map[int64]Doc
 }
 
-func NewInvertedIndex() *InvertedIndex {
-	return &InvertedIndex{
+func NewInvertedIndex() InvertedIndex {
+	return InvertedIndex{
 		invertedLists: make(map[string][]Posting),
-		docs:          make(map[int]Doc),
+		docs:          make(map[int64]Doc),
 	}
 }
 
-func (ii *InvertedIndex) GetInvertedLists() map[string][]Posting {
+func (ii InvertedIndex) GetInvertedLists() map[string][]Posting {
 	return ii.invertedLists
 }
 
-func (ii *InvertedIndex) GetDocByID(id int) Doc {
+func (ii InvertedIndex) GetDocByID(id int64) Doc {
 	return ii.docs[id]
 }
 
@@ -77,7 +77,7 @@ func (ii *InvertedIndex) ReIndexFromFile(filename string, bm25B, bm25K float64) 
 	invertedList := make(map[string][]Posting)
 
 	scanner := bufio.NewScanner(f)
-	docID, docLenSum := 0, 0
+	docID, docLenSum := int64(0), 0
 	for scanner.Scan() {
 		docID += 1
 
@@ -152,25 +152,21 @@ func (ii *InvertedIndex) getRoundedInvertedIndex() (ret map[string][]Posting) {
 	return
 }
 
-func (ii *InvertedIndex) ProcessQuery(query string) (docIDList []int, err error) {
+func (ii *InvertedIndex) ProcessQuery(query string) (docPostings []Posting) {
 	words := nonAlphaCharRegex.Split(query, -1)
-	var mergedPosting []Posting
 	for _, word := range words {
-		if len(mergedPosting) == 0 {
-			mergedPosting = ii.invertedLists[word]
+		if len(docPostings) == 0 {
+			docPostings = ii.invertedLists[word]
 		} else {
-			mergedPosting = Merge(mergedPosting, ii.invertedLists[word])
+			docPostings = Merge(docPostings, ii.invertedLists[word])
 		}
 	}
 
-	sort.Slice(mergedPosting, func(i, j int) bool {
-		pi, pj := mergedPosting[i], mergedPosting[j]
+	sort.Slice(docPostings, func(i, j int) bool {
+		pi, pj := docPostings[i], docPostings[j]
 		return pi.BM25 >= pj.BM25
 	})
 
-	for _, posting := range mergedPosting {
-		docIDList = append(docIDList, posting.DocID)
-	}
 	return
 }
 

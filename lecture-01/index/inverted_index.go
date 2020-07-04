@@ -18,22 +18,22 @@ type InvertedIndex struct {
 	docs          map[int]string
 }
 
-func NewInvertedIndex() *InvertedIndex {
-	return &InvertedIndex{
+func NewInvertedIndex() InvertedIndex {
+	return InvertedIndex{
 		invertedLists: make(map[string][]int),
 		docs:          make(map[int]string),
 	}
 }
 
-func (ii *InvertedIndex) GetInvertedLists() map[string][]int {
+func (ii InvertedIndex) GetInvertedLists() map[string][]int {
 	return ii.invertedLists
 }
 
-func (ii *InvertedIndex) GetDocByID(id int) string {
+func (ii InvertedIndex) GetDocByID(id int) string {
 	return ii.docs[id]
 }
 
-func (ii *InvertedIndex) ReIndexFromFile(filename string) (err error) {
+func (ii InvertedIndex) ReIndexFromFile(filename string) (err error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return

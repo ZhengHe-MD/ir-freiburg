@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+const epsilon = 1E-04
+
 func TestInvertedIndex_ReIndexFromFile(t *testing.T) {
 	tests := []struct {
 		givenFilename     string
@@ -14,7 +16,7 @@ func TestInvertedIndex_ReIndexFromFile(t *testing.T) {
 		wantInvertedLists map[string][]Posting
 	}{
 		{
-			"../example.txt",
+			"example.txt",
 			0, math.Inf(1),
 			map[string][]Posting{
 				"animated": {
@@ -45,7 +47,7 @@ func TestInvertedIndex_ReIndexFromFile(t *testing.T) {
 			},
 		},
 		{
-			"../example.txt",
+			"example.txt",
 			0.75, 1.75,
 			map[string][]Posting{
 				"animated": {
@@ -116,22 +118,80 @@ func TestMerge(t *testing.T) {
 
 func TestInvertedIndex_ProcessQuery(t *testing.T) {
 	tests := []struct {
-		givenFilename string
-		givenQuery    string
-		givenBM25B    float64
-		givenBM25K    float64
-		wantDocIDList []int
-		wantErr       error
+		givenQuery         string
+		givenInvertedLists map[string][]Posting
+		wantResultPosting  []Posting
 	}{
-		{"../example.txt", "movie short", 0.75, 1.75, []int{4, 3, 2, 1}, nil},
-		{"../example.txt", "non animated film", 0.75, 1.75, []int{2, 4, 1}, nil},
+		{
+			"foo bar",
+			map[string][]Posting{
+				"foo": {
+					{1, 0.2},
+					{3, 0.6},
+				},
+				"bar": {
+					{1, 0.4},
+					{2, 0.7},
+					{3, 0.5},
+				},
+				"baz": {
+					{2, 0.1},
+				},
+			},
+			[]Posting{
+				{3, 1.1},
+				{2, 0.7},
+				{1, 0.6},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		ii := InvertedIndex{invertedLists: tt.givenInvertedLists}
+		docPostings := ii.ProcessQuery(tt.givenQuery)
+		for i, wantPosting := range tt.wantResultPosting {
+			assert.Equal(t, wantPosting.DocID, docPostings[i].DocID)
+			assert.True(t, math.Abs(wantPosting.BM25-docPostings[i].BM25) < epsilon)
+		}
+	}
+}
+
+func TestInvertedIndex_Process(t *testing.T) {
+	tests := []struct {
+		givenFilename   string
+		givenQuery      string
+		givenBM25B      float64
+		givenBM25K      float64
+		wantDocPostings []Posting
+	}{
+		{
+			"example.txt", "movie short",
+			0.75, 1.75,
+			[]Posting{
+				{4, 0.0},
+				{3, 0.0},
+				{2, 0.0},
+				{1, 0.0},
+			},
+		},
+		{
+			"example.txt",
+			"non animated film",
+			0.75, 1.75,
+			[]Posting{
+				{2, 0.0},
+				{4, 0.0},
+				{1, 0.0},
+			},
+		},
 	}
 
 	for _, tt := range tests {
 		ii := NewInvertedIndex()
 		assert.NoError(t, ii.ReIndexFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K))
-		docIDList, err := ii.ProcessQuery(tt.givenQuery)
-		assert.NoError(t, err)
-		assert.Equal(t, tt.wantDocIDList, docIDList)
+		docPostings := ii.ProcessQuery(tt.givenQuery)
+		for i, wantDocPosting := range tt.wantDocPostings {
+			assert.Equal(t, wantDocPosting.DocID, docPostings[i].DocID)
+		}
 	}
 }

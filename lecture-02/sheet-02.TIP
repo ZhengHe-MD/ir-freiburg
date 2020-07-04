@@ -1,0 +1,156 @@
+// Copyright 2017, University of Freiburg,
+// Chair of Algorithms and Data Structures.
+// Claudius Korzen <korzen@cs.uni-freiburg.de>
+
+// NOTE: This file contains specifications and design suggestions in
+// pseudo-code. It is not supposed to be compilable in any language. The
+// specifications are mandatory, the design suggestions are not.
+
+// A simple inverted index that uses BM25 scores.
+class InvertedIndex
+
+  // Construct the inverted index from the given file. The expected format of
+  // the file is one document per line, in the format <title>TAB<description>.
+  // Each entry in the inverted list associated to a word should contain a
+  // document id and a BM25 score. Compute the BM25 scores as follows:
+  //
+  // (1) In a first pass, compute the inverted lists with tf scores (that
+  //     is the number of occurrences of the word within the <title> and the
+  //     <description> of a document). Further, compute the document length
+  //     (DL) for each document (that is the number of words in the <title> and
+  //     the <description> of a document). Afterwards, compute the average
+  //     document length (AVDL).
+  // (2) In a second pass, iterate each inverted list and replace the tf scores
+  //     by BM25 scores, defined as:
+  //     BM25 = tf * (k + 1) / (k * (1 - b + b * DL / AVDL) + tf) * log2(N/df),
+  //     where N is the total number of documents and df is the number of
+  //     documents that contains the word.
+  //
+  // On reading the file, use UTF-8 as the standard encoding. To split the
+  // texts into words, use the method introduced in the lecture. Make sure that
+  // you ignore empty words.
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.read_from_file("example.txt", b=0, k=Infinity)
+  //   ii.inverted_lists
+  // RESULT:
+  //   {
+  //     'animated':  [(1, 0.415), (2, 0.415), (4, 0.415)],
+  //     'animation': [(3, 2.0)],
+  //     'film':      [(2, 1.0), (4, 1.0)],
+  //     'movie':     [(1, 0.0), (2, 0.0), (3, 0.0), (4, 0.0)],
+  //     'non':       [(2, 2.0)],
+  //     'short':     [(3, 1.0), (4, 2.0)]
+  //   }
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.read_from_file("example.txt", b=0.75, k=1.75)
+  //   ii.inverted_lists
+  // RESULT:
+  //   {
+  //     'animated':  [(1, 0.459), (2, 0.402), (4, 0.358)],
+  //     'animation': [(3, 2.211)],
+  //     'film':      [(2, 0.969), (4, 0.863)],
+  //     'movie':     [(1, 0.0), (2, 0.0), (3, 0.0), (4, 0.0)],
+  //     'non':       [(2, 1.938)],
+  //     'short':     [(3, 1.106), (4, 1.313)]
+  //   }
+  void read_from_file(String file_name, float b, float k)
+
+  // Compute the union of the two given inverted lists in linear time (linear
+  // in the total number of entries in the two lists), where the entries in
+  // the inverted lists are postings of form (doc_id, bm25_score) and are
+  // expected to be sorted by doc_id, in ascending order.
+  //
+  // TEST CASE:
+  //   merge([(1, 2.1), (5, 3.2)], [(1, 1.7), (2, 1.3), (5, 3.3)])
+  // RESULT:
+  //   [(1, 3.8), (2, 1.3), (5, 6.5)]
+  Array<Tuple<int, float>> merge(Array<Tuple<int, float>> list1,
+      Array<Tuple<int, float>> list2)
+
+  // Process the given keyword query as follows: Fetch the inverted list for
+  // each of the keywords in the query and compute the union of all lists. Sort
+  // the resulting list by BM25 scores in descending order.
+  //
+  // If you want to implement some ranking refinements, make these refinements
+  // optional (their use should be controllable via a 'use_refinements' flag).
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.inverted_lists = {
+  //     "foo": [(1, 0.2), (3, 0.6)],
+  //     "bar": [(1, 0.4), (2, 0.7), (3, 0.5)]
+  //     "baz": [(2, 0.1)]
+  //   }
+  //   ii.process_query("foo bar", use_refinements=False)
+  // RESULT:
+  //   [(3, 1.1), (2, 0.7), (1, 0.6)]
+  Array<Tuple<int, float>> process_query(String query, boolean use_refinements)
+
+
+// Class for evaluating the InvertedIndex class against a benchmark.
+class EvaluateInvertedIndex:
+
+  // Read a benchmark from the given file. The expected format of the file is
+  // one query per line, with the ids of all documents relevant for that query,
+  // like: <query>TAB<id1>WHITESPACE<id2>WHITESPACE<id3> ...
+  //
+  // TEST CASE:
+  //    read_benchmark("example-benchmark.txt")
+  // RESULT:
+  //    { 'animated film': {1, 3, 4}, 'short film': {3, 4} }
+  Map<String, Set<int>> read_benchmark(String file_name)
+
+  // Evaluate the given inverted index against the given benchmark as follows.
+  // Process each query in the benchmark with the given inverted index and
+  // compare the result list with the groundtruth in the benchmark. For each
+  // query, compute the measure P@3, P@R and AP as explained in the lecture.
+  // Aggregate the values to the three mean measures MP@3, MP@R and MAP and
+  // return them.
+  //
+  // Implement a parameter 'use_refinements' that controls the use of ranking
+  // refinements on calling the method process_query of your inverted index.
+  //
+  // TEST_CASE:
+  //   InvertedIndex ii
+  //   ii.read_from_file("example.txt", b=0.75, k=1.75)
+  //   benchmark = read_benchmark("example-benchmark.txt")
+  //   evaluate(ii, benchmark, use_refinements=False)
+  // RESULT:
+  //   (0.667, 0.833, 0.694)
+  Triple<float, float, float> evaluate(InvertedIndex ii,
+      Map<String, Set<int>> benchmark, boolean use_refinements)
+
+  // Compute the measure P@k for the given list of result ids as it was
+  // returned by the inverted index for a single query, and the given set of
+  // relevant document ids.
+  //
+  // Note that the relevant document ids are 1-based (as they reflect the line
+  // number in the dataset file).
+  //
+  // TEST CASE:
+  //   precision_at_k([5, 3, 6, 1, 2], {1, 2, 5, 6, 7, 8}, k=2)
+  // RESULT:
+  //   0.5
+  //
+  // TEST CASE:
+  //   precision_at_k([5, 3, 6, 1, 2], {1, 2, 5, 6, 7, 8}, k=4)
+  // RESULT:
+  //   0.75
+  float precision_at_k(Array<int> result_ids, Set<int> relevant_ids, int k)
+
+  // Compute the average precision (AP) for the given list of result ids as it
+  // was returned by the inverted index for a single query, and the given set
+  // of relevant document ids.
+  //
+  // Note that the relevant document ids are 1-based (as they reflect the line
+  // number in the dataset file).
+  //
+  // TEST CASE:
+  //   average_precision([7, 17, 9, 42, 5], {5, 7, 12, 42})
+  // RESULT:
+  //   0.525
+  float average_precision(Array<int> result_ids, Set<int> relevant_ids)
