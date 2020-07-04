@@ -78,9 +78,8 @@ func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64) (er
 	docs := make(map[int64]Doc)
 
 	scanner := bufio.NewScanner(f)
-	docID, docLenSum := int64(1), 0
+	docID, docLenSum := int64(0), 0
 	for scanner.Scan() {
-		// NOTE: it's counter-intuitive that the movies-benchmark counts docID from 2, not 0 or 1.
 		docID += 1
 
 		line := scanner.Text()
