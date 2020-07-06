@@ -67,7 +67,7 @@ func (ii *InvertedIndex) GetDocByID(id int64) Doc {
 // On reading the file, use UTF-8 as the standard encoding. To split the
 // texts into words, use the method introduced in the lecture. Make sure that
 // you ignore empty words.
-func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64) (err error) {
+func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64, options RefinementOptions) (err error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return
@@ -90,6 +90,10 @@ func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64) (er
 		docLen := 0
 		for _, word := range words {
 			if len(word) == 0 {
+				continue
+			}
+
+			if options.ExcludingStopWords && IsStopWord(word) {
 				continue
 			}
 			docLen += 1
@@ -154,9 +158,17 @@ func (ii *InvertedIndex) getRoundedInvertedIndex() (ret map[string][]Posting) {
 	return
 }
 
-func (ii *InvertedIndex) ProcessQuery(query string) (docPostings []Posting) {
+func (ii *InvertedIndex) ProcessQuery(query string, options RefinementOptions) (docPostings []Posting) {
 	words := nonAlphaCharRegex.Split(query, -1)
 	for _, word := range words {
+		if len(word) == 0 {
+			continue
+		}
+
+		if options.ExcludingStopWords && IsStopWord(word) {
+			continue
+		}
+
 		if len(docPostings) == 0 {
 			docPostings = ii.invertedLists[word]
 		} else {

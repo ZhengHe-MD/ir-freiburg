@@ -27,3 +27,11 @@ go run cmd/benchmark/main.go ../data/movies.txt ../data/movies-benchmark-minus-1
 # MP@3: 0.593
 # MP@R: 0.473
 # MAP: 0.491
+# excluding stop words (top 10)
+# MP@3: 0.556
+# MP@R: 0.466
+# MAP: 0.485
+# excluding stop words (top 20)
+# MP@3: 0.556
+# MP@R: 0.466
+# MAP: 0.471
