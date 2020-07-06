@@ -17,7 +17,11 @@ func main() {
 	datasetFilename, benchmarkFilename := os.Args[1], os.Args[2]
 
 	ii := index.NewInvertedIndex()
-	err := ii.ReadFromFile(datasetFilename, 0.75, 1.25)
+	//err := ii.ReadFromFile(datasetFilename, 0.75, 1.25)
+	//err := ii.ReadFromFile(datasetFilename, 0.1, 0.75)
+	//err := ii.ReadFromFile(datasetFilename, 0.3, 1.0)
+	//err := ii.ReadFromFile(datasetFilename, 0.34, 1.35)
+	err := ii.ReadFromFile(datasetFilename, 0.11, 0.77)
 	if err != nil {
 		log.Println(err)
 		return
