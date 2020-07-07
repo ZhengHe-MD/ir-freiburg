@@ -30,15 +30,32 @@ In-class demo and exercise code can be found in [lecture-01 directory](./lecture
   * Term Frequency (tf)
   * Document Frequency (df)
   * tf.idf
-  * BM25
+  * BM25 (best match)
 * Evaluation
   * Precision (P@K)
   * Average Precision (AP)
   * Mean Precisions (MP@k, MP@R, MAP)
-  * Discounted Cumulative Gain
+  * Discounted Cumulative Gain (DCG)
   * Binary Preference (bpref)
 
 In-class demo and exercies code can be found in [lecture-02 directory](./lecture-02). The [script.sh](./lecture-02/script.sh) contains the command to benchmark on movies dataset. It's counter-intuitive that the provided [movies-benchmark.txt](./data/movies-benchmark.txt) start counting docID at 2, which conflicts with the provided unit test cases in [TIP file](./lecture-02/sheet-02.TIP) either. So I write a [script](./data/process_movies_benchmark.go) to process the movies-benchmark.txt, make it start counting docID at 1, the result benchmark file [movies-benchmark-minus-1.txt](./data/movies-benchmark-minus-1.txt) is also provided in the [data directory](./data).
+
+### Lecture-03
+
+* List intersection
+  * Intersection and merge
+  * Time measurement (repeat 5 times at least)
+* Non-algorithmic improvements
+  * Naive arrays, ArrayList in Java, std::vector in C++
+  * Predictable branches (cpu pipelining, reduce guessing)
+  * Sentinels (avoid condition testing)
+* Algorithmic improvements
+  * Preliminaries: smaller list A with k elements, longer list B with n elements
+  * Binary search in the longer list, θ(klogn)
+  * Binary search in the remainder of longer list, best case θ(k+logn), worst case θ(klogn), average case θ(klogn)
+  * Galloping search, O(klog(1+n/k))
+  * Skip Pointers
+  
 
 ## References
 * [course website](https://ad-wiki.informatik.uni-freiburg.de/teaching/InformationRetrievalWS1718)
