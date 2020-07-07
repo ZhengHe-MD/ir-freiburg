@@ -142,13 +142,13 @@ func TestEvaluate(t *testing.T) {
 
 	for _, tt := range tests {
 		ii := index.NewInvertedIndex()
-		err := ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K)
+		err := ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K, index.RefinementOptions{})
 		assert.NoError(t, err)
 
 		benchmark, err := ReadBenchmark(tt.givenBenchmarkFilename)
 		assert.NoError(t, err)
 
-		mps := Evaluate(ii, benchmark, false)
+		mps := Evaluate(ii, benchmark, index.RefinementOptions{})
 		assert.True(t, math.Abs(tt.wantMPS.MPAt3-mps.MPAt3) <= epsilon)
 		assert.True(t, math.Abs(tt.wantMPS.MPAtR-mps.MPAtR) <= epsilon)
 		assert.True(t, math.Abs(tt.wantMPS.MAP-mps.MAP) <= epsilon)

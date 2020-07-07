@@ -81,7 +81,7 @@ func TestInvertedIndex_ReIndexFromFile(t *testing.T) {
 
 	for _, tt := range tests {
 		ii := NewInvertedIndex()
-		assert.NoError(t, ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K))
+		assert.NoError(t, ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K, RefinementOptions{}))
 		assert.Equal(t, tt.wantInvertedLists, ii.getRoundedInvertedIndex())
 	}
 }
@@ -148,7 +148,7 @@ func TestInvertedIndex_ProcessQuery(t *testing.T) {
 
 	for _, tt := range tests {
 		ii := InvertedIndex{invertedLists: tt.givenInvertedLists}
-		docPostings := ii.ProcessQuery(tt.givenQuery)
+		docPostings := ii.ProcessQuery(tt.givenQuery, RefinementOptions{})
 		for i, wantPosting := range tt.wantResultPosting {
 			assert.Equal(t, wantPosting.DocID, docPostings[i].DocID)
 			assert.True(t, math.Abs(wantPosting.BM25-docPostings[i].BM25) < epsilon)
@@ -188,8 +188,8 @@ func TestInvertedIndex_Process(t *testing.T) {
 
 	for _, tt := range tests {
 		ii := NewInvertedIndex()
-		assert.NoError(t, ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K))
-		docPostings := ii.ProcessQuery(tt.givenQuery)
+		assert.NoError(t, ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K, RefinementOptions{}))
+		docPostings := ii.ProcessQuery(tt.givenQuery, RefinementOptions{})
 		for i, wantDocPosting := range tt.wantDocPostings {
 			assert.Equal(t, wantDocPosting.DocID, docPostings[i].DocID)
 		}
