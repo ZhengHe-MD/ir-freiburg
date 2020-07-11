@@ -40,7 +40,7 @@ In-class demo and exercise code can be found in [lecture-01 directory](./lecture
 
 In-class demo and exercies code can be found in [lecture-02 directory](./lecture-02). The [script.sh](./lecture-02/script.sh) contains the command to benchmark on movies dataset. It's counter-intuitive that the provided [movies-benchmark.txt](./data/movies-benchmark.txt) start counting docID at 2, which conflicts with the provided unit test cases in [TIP file](./lecture-02/sheet-02.TIP) either. So I write a [script](./data/process_movies_benchmark.go) to process the movies-benchmark.txt, make it start counting docID at 1, the result benchmark file [movies-benchmark-minus-1.txt](./data/movies-benchmark-minus-1.txt) is also provided in the [data directory](./data).
 
-### Lecture-03 🚧
+### Lecture-03 ✅
 
 * List intersection
   * Intersection and merge
@@ -55,6 +55,16 @@ In-class demo and exercies code can be found in [lecture-02 directory](./lecture
   * Binary search in the remainder of longer list, best case θ(k+logn), worst case θ(klogn), average case θ(klogn)
   * Galloping search, O(klog(1+n/k))
   * Skip Pointers
+
+| optimization strategy | ns/op |
+|:----------------------|:------|
+|BenchmarkIntersectBasic-4                              |10584688 ns/op | 
+|BenchmarkIntersectWithLessConditionalParts-4           |7265918 ns/op |
+|BenchmarkIntersectWithSentinels-4                      |7008293 ns/op |
+|BenchmarkIntersectWithBinarySearchInLongerRemainder-4  |7649609 ns/op |
+|BenchmarkIntersectWithGallopingSearch-4                |6083991 ns/op |
+|BenchmarkIntersectWithSkipPointer-4                    |10583605 ns/op |
+|BenchmarkIntersectHybrid-4                             |5345517 ns/op |
   
 
 ## References
