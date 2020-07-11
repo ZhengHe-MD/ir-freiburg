@@ -51,7 +51,7 @@ func TestMultiMerge(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		ret := MultiMerge(tt.givenLists...)
+		ret := KWayIntersect(tt.givenLists...)
 		assert.Equal(t, tt.wantRet, ret)
 	}
 }

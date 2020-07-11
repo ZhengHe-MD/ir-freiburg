@@ -71,13 +71,13 @@ func (ii *InvertedIndex) ProcessQuery(query string) (docIDList []int64, err erro
 	for i, word := range words {
 		lists[i] = ii.invertedLists[word]
 	}
-	docIDList = MultiMerge(lists...)
+	docIDList = KWayIntersect(lists...)
 	return
 }
 
-// MultiMerge merge an arbitrary number of sorted lists.
+// KWayIntersect merge an arbitrary number of sorted lists.
 // TODO: use priority queue to find minimum element.
-func MultiMerge(lists ...[]int64) (ret []int64) {
+func KWayIntersect(lists ...[]int64) (ret []int64) {
 	var idxList = make([]int, len(lists))
 	var upperBoundList = make([]int, len(lists))
 
