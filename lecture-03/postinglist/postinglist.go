@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -60,6 +61,49 @@ func (m *PostingList) ReadFromFile(filename string) (err error) {
 	return
 }
 
+func (m *PostingList) ReadFromFileWithSentinel(filename string) (err error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return
+	}
+	defer f.Close()
+
+	scanner := bufio.NewScanner(f)
+	if !scanner.Scan() {
+		err = errors.New("file less than one line")
+		return
+	}
+	firstLine := scanner.Text()
+	n, err := strconv.ParseInt(firstLine, 10, 64)
+	if err != nil {
+		return
+	}
+	// for sentinel
+	m.Reserve(int(n+1))
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		parts := strings.Fields(line)
+		if len(parts) != 2 {
+			err = errors.New("invalid line format")
+			return
+		}
+
+		var id, score int64
+		if id, err = strconv.ParseInt(parts[0], 10, 64); err != nil {
+			return
+		}
+		if score, err = strconv.ParseInt(parts[1], 10, 64); err != nil {
+			return
+		}
+
+		m.AddPosting(id, score)
+	}
+
+	m.AddPosting(math.MaxInt64, 0)
+	return
+}
+
 func (m *PostingList) AddPosting(id, score int64) {
 	m.docIDList[m.num] = id
 	m.scoreList[m.num] = score
@@ -96,4 +140,8 @@ func (m *PostingList) String() string {
 	}
 	sb.WriteString("]")
 	return sb.String()
+}
+
+func (m *PostingList) HasSentinel() bool {
+	return m.docIDList[m.num-1] == math.MaxInt64
 }
