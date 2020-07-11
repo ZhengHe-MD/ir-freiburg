@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-func TestIntersectWithBinarySearchInLongerRemainder(t *testing.T) {
+func TestIntersectWithGallopingSearch(t *testing.T) {
 	l1, l2, l3 := NewPostingList(), NewPostingList(), NewPostingList()
 	assert.NoError(t, l1.ReadFromFile("../data/example1.txt"))
 	assert.NoError(t, l2.ReadFromFile("../data/example2.txt"))
 	assert.NoError(t, l3.ReadFromFile("../data/example3.txt"))
 
-	ret1 := IntersectWithBinarySearchInLongerRemainder(l1, l2)
-	ret2 := IntersectWithBinarySearchInLongerRemainder(l1, l3)
+	ret1 := IntersectWithGallopingSearch(l1, l2)
+	ret2 := IntersectWithGallopingSearch(l1, l3)
 
 	assert.Equal(t, "[(2, 9), (6, 5)]", ret1.String())
 	assert.Equal(t, "[]", ret2.String())

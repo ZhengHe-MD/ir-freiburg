@@ -4,7 +4,7 @@ import (
 	. "github.com/ZhengHe-MD/ir-freiburg.git/lecture-03/postinglist"
 )
 
-func IntersectBinarySearchInLongerRemainder(l1, l2 *PostingList) (ret *PostingList) {
+func IntersectWithBinarySearchInLongerRemainder(l1, l2 *PostingList) (ret *PostingList) {
 	ret = NewPostingList()
 
 	if l1.Size() > l2.Size() {
@@ -16,7 +16,7 @@ func IntersectBinarySearchInLongerRemainder(l1, l2 *PostingList) (ret *PostingLi
 	var i1, i2 int
 	var found bool
 	for i1 < l1.Size() && i2 < l2.Size() {
-		found, i2 = binarySearch(l1.GetId(i1), i2, l2)
+		found, i2 = binarySearch(l1.GetId(i1), i2, l2.Size()-1, l2)
 		if found {
 			ret.AddPosting(l1.GetId(i1), l1.GetScore(i1)+l2.GetScore(i2-1))
 		}
@@ -25,8 +25,8 @@ func IntersectBinarySearchInLongerRemainder(l1, l2 *PostingList) (ret *PostingLi
 	return
 }
 
-func binarySearch(id int64, startPos int, postingList *PostingList) (found bool, nextPos int) {
-	li, ri := startPos, postingList.Size()-1
+func binarySearch(id int64, startPos, endPos int, postingList *PostingList) (found bool, nextPos int) {
+	li, ri := startPos, endPos
 
 	if id > postingList.GetId(ri) {
 		return false, ri+1
