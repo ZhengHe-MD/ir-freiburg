@@ -4,7 +4,7 @@ import (
 	. "github.com/ZhengHe-MD/ir-freiburg.git/lecture-03/postinglist"
 )
 
-func IntersectBinarySearchInLonger(l1, l2 *PostingList) (ret *PostingList) {
+func IntersectBinarySearchInLongerRemainder(l1, l2 *PostingList) (ret *PostingList) {
 	ret = NewPostingList()
 
 	if l1.Size() > l2.Size() {

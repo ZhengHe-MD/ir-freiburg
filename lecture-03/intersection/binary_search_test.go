@@ -12,8 +12,8 @@ func TestIntersectBinarySearchInLonger(t *testing.T) {
 	assert.NoError(t, l2.ReadFromFile("../data/example2.txt"))
 	assert.NoError(t, l3.ReadFromFile("../data/example3.txt"))
 
-	ret1 := IntersectBinarySearchInLonger(l1, l2)
-	ret2 := IntersectBinarySearchInLonger(l1, l3)
+	ret1 := IntersectBinarySearchInLongerRemainder(l1, l2)
+	ret2 := IntersectBinarySearchInLongerRemainder(l1, l3)
 
 	assert.Equal(t, "[(2, 9), (6, 5)]", ret1.String())
 	assert.Equal(t, "[]", ret2.String())
