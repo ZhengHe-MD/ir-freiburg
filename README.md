@@ -58,9 +58,8 @@ In-class demo and exercies code can be found in [lecture-02 directory](./lecture
   
 
 ## References
-* [course website](https://ad-wiki.informatik.uni-freiburg.de/teaching/InformationRetrievalWS1718)
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
-* [exercises](https://github.com/eamsen/ir-edu)
-* [lecture codes](https://github.com/numairmansur/InformationRetrival)
+* [course wiki](https://ad-wiki.informatik.uni-freiburg.de/teaching/InformationRetrievalWS1718)
+* [lecture svn repo](https://daphne.informatik.uni-freiburg.de/ws1718/InformationRetrieval/svn-public/public/)
 * Text books
   * [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/information-retrieval-book.html)
