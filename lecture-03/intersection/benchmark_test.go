@@ -47,15 +47,15 @@ func prepareDataWithSentinel() (postingLists []*PostingList, err error) {
 func prepareDataWithSkipPointer() (postingLists []*PostingList, err error) {
 	l1, l2, l3 := NewPostingList(), NewPostingList(), NewPostingList()
 
-	if err = l1.ReadFromFileWithSkipPointer("../data/bowling.txt", 100); err != nil {
+	if err = l1.ReadFromFileWithSkipPointer("../data/bowling.txt", 2000); err != nil {
 		return
 	}
 
-	if err = l2.ReadFromFileWithSkipPointer("../data/film.txt", 100); err != nil {
+	if err = l2.ReadFromFileWithSkipPointer("../data/film.txt", 2000); err != nil {
 		return
 	}
 
-	if err = l3.ReadFromFileWithSkipPointer("../data/rug.txt", 100); err != nil {
+	if err = l3.ReadFromFileWithSkipPointer("../data/rug.txt", 2000); err != nil {
 		return
 	}
 
