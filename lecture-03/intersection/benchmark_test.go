@@ -82,3 +82,16 @@ func BenchmarkIntersectWithSentinels(b *testing.B) {
 		}
 	}
 }
+
+func BenchmarkIntersectBinarySearchInLonger(b *testing.B) {
+	postingLists, err := prepareData()
+	assert.NoError(b, err)
+
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < len(postingLists); j++ {
+			for k := 0; k < j; k++ {
+				IntersectBinarySearchInLonger(postingLists[j], postingLists[k])
+			}
+		}
+	}
+}
