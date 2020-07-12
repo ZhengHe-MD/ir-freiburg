@@ -25,7 +25,7 @@ func main() {
 	defer outputFile.Close()
 
 	scanner := bufio.NewScanner(inputFile)
-	scanner.Buffer([]byte{}, 100 * 1024 * 1024)
+	scanner.Buffer([]byte{}, 100*1024*1024)
 	for scanner.Scan() {
 		line := scanner.Text()
 		println(line)
@@ -47,7 +47,7 @@ func main() {
 				return
 			}
 
-			docIdStrList = append(docIdStrList, fmt.Sprintf("%d", docId - 1))
+			docIdStrList = append(docIdStrList, fmt.Sprintf("%d", docId-1))
 		}
 
 		outLine := fmt.Sprintf("%s\t%s\n", query, strings.Join(docIdStrList, " "))

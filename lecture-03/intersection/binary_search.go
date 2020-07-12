@@ -29,7 +29,7 @@ func binarySearch(id int64, startPos, endPos int, postingList *PostingList) (fou
 	li, ri := startPos, endPos
 
 	if id > postingList.GetId(ri) {
-		return false, ri+1
+		return false, ri + 1
 	}
 
 	if id < postingList.GetId(li) {
@@ -37,13 +37,13 @@ func binarySearch(id int64, startPos, endPos int, postingList *PostingList) (fou
 	}
 
 	for li <= ri {
-		mi := (li+ri)/2
+		mi := (li + ri) / 2
 		if postingList.GetId(mi) == id {
-			return true, mi+1
+			return true, mi + 1
 		} else if postingList.GetId(mi) < id {
-			li = mi+1
+			li = mi + 1
 		} else {
-			ri = mi-1
+			ri = mi - 1
 		}
 	}
 

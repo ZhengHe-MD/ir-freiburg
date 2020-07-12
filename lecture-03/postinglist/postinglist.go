@@ -127,7 +127,7 @@ func (m *PostingList) ReadFromFileWithSkipPointer(filename string, numSkipPointe
 	gap := int(n) / numSkipPointers
 	for scanner.Scan() {
 		line := scanner.Text()
-		if m.num % gap == 0 && (m.num + gap < int(n)) {
+		if m.num%gap == 0 && (m.num+gap < int(n)) {
 			m.AddSkipPointer(m.num + gap)
 		} else {
 			m.AddSkipPointer(0)
