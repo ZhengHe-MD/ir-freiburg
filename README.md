@@ -65,6 +65,8 @@ In-class demo and exercies code can be found in [lecture-02 directory](./lecture
 |BenchmarkIntersectWithGallopingSearch-4                |6083991 ns/op |
 |BenchmarkIntersectWithSkipPointer-4                    |10583605 ns/op |
 |BenchmarkIntersectHybrid-4                             |5345517 ns/op |
+
+title of the film: [The Shining](https://en.wikipedia.org/?curid=1186616)
   
 
 ## References

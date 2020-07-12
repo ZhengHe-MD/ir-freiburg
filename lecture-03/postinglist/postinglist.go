@@ -203,3 +203,9 @@ func (m *PostingList) String() string {
 func (m *PostingList) HasSentinel() bool {
 	return m.docIDList[m.num-1] == math.MaxInt64
 }
+
+func (m *PostingList) Iterate(iterator func(idx int)) {
+	for i := 0; i < m.num; i++ {
+		iterator(i)
+	}
+}
