@@ -34,8 +34,12 @@ func main() {
 	}
 
 	var ret *PostingList
-	for i := 0; i < len(postingLists)-1; i++ {
-		ret = intersection.IntersectBasic(postingLists[i], postingLists[i+1])
+	for i := 0; i < len(postingLists); i++ {
+		if i == 0 {
+			ret = postingLists[i]
+		} else {
+			ret = intersection.IntersectBasic(ret, postingLists[i])
+		}
 	}
 
 	ret.Iterate(func(i int) {
