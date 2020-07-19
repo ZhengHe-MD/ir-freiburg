@@ -68,7 +68,7 @@ In-class demo and exercies code can be found in [lecture-02 directory](./lecture
 
 title of the film: [The Big Lebowski](https://en.wikipedia.org/?curid=29782).
 
-### Lecture-04 🚧
+### Lecture-04 ✅
 
 * Compression
   * Motivation
