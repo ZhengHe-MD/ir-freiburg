@@ -72,55 +72,34 @@ title of the film: [The Big Lebowski](https://en.wikipedia.org/?curid=29782).
 
 * Compression
   * Motivation
-    * Large inverted list in web-scale collection. Try a few keyword searches on Google.
-    * Compression can saves space and time.
   * Memory & Disk
-    * Index in memory
-      * Compression saves memory.
-      * More index can be fit into memory, which is good because memory ops are much faster than disk ops.
-    * Index on disk
-      * Compression saves disk space.
-      * Compression saves query time. Spend less time on i/o, but more time on cpu, the later usually outweights the former.
   * Gap encoding
     * Idea: stores differences (always positive integers) instead of raw doc ids.
     * Binary representation
-      * takes $(\left \lfloor{log_2{x}}\right \rfloor + 1)$ bits for each number.
-      * but there are multiple ways to decode an inverted list with binary representation.
     * Prefix-free codes: decoding from left to right is unambiguous.
 * Codes
   * Elias-Gamma (1975)
-    * code: $\left \lfloor{log_2{x}}\right \rfloor$ zeros + x in binary.
-    * length: exactly $(2\left \lfloor{log_2{x}}\right \rfloor + 1)$ bits.
-    * why prefix-free?
   * Elias-Delta (1975)
-    * code: $\left \lfloor{log_2{x}}\right \rfloor + 1$ in Elias-Gamma + x in binary without the leading 1
-    * length: $\left \lfloor{log_2{x}}\right \rfloor + 2log_2{log_2{x}} + O(1)$ bits
-    * why prefix-free? Elias-Gamma code tells exactly how many bits of the code come afterwards
   * Golomb (1966)
-    * parameter: M (integer), called modulus
-    * code:
-      * $x = q*M + r$, $q = x \space div \space M$, $r = x \space mod \space M$
-      * concatenation of:
-        * q written in unary with 0s
-        * a single 1 (as a delimiter)
-        * r written in binary
-    * length: $\left \lfloor{\frac{x}{M}}\right \rfloor + 1 + \left \lceil{log_2{M}}\right \rceil$
-    * why prefix-free?
   * Variable-Bytes (VB)
-    * idea
-      * Use whole bytes and avoid bit fidding, just like UTF-8 encoding.
-      * use one bit of each byte to indicate whether this is the last byte in the current code or not.
   * Other codes: ANS
 * Entropy (theory part)
   * Motivation: Which code compresses the best? It depends on the distributions. The intuition is that **more frequent less bits**.
-  * Definition: 
-    * Entropy of a discrete random variable $X$, which generates the symbols of a message.
-    * $H(x) = -\sum_{i}p_{i}log_2{p_i}$, where $p_i = Prob(X = i)$, $H(x)$ is the optimal number of bits to encode a random symbol generated according to $X$.
   * Shannon's source coding theorem (1948)
-    * For an arbitrary prefix-free (PF) encoding, let $L_i$ be the length of the code for $i \in range(X)$
-      * For any PF encoding it holds: $E(L_x) \ge H(x)$
-      * There is a PF encoding with: $E(L_x) \le H(x) + 1$
     * In plain words: **No code can be better than the entropy, and there is always a code that is (almost) as good**.
+    
+### Lecture-05 ✅
+
+* Fuzzy Search
+* Edit distance
+* q-Gram Index
+
+Result Table:
+| Query | Time | #PED | #RES | Language | Processor/RAM |
+|-------|------|------|------|----------|---------------|
+| the   | 199ms| 139  | 139  | Go       | 2.7 GHz Dual-Core Intel Core i5 |
+| breib | 830ms| 189857 | 279 | Go      | 2.7 GHz Dual-Core Intel Core i5 |
+| the BIG lebauski | 133ms | 669 | 1 | Go | 2.7 GHz Dual-Core Intel Core i5 | 
 
 
 ## References

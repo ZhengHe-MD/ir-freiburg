@@ -2,3 +2,6 @@
 .idea/
 *~
 *.swp
+
+# data
+data/wikidata-entities.tsv
