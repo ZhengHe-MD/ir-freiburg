@@ -1,0 +1,207 @@
+// Copyright 2017, University of Freiburg,
+// Chair of Algorithms and Data Structures.
+// Author: Hannah Bast <bast@cs.uni-freiburg.de>,
+//         Claudius Korzen <korzen@cs.uni-freiburg.de>.
+
+// A simple q-gram index as explained in lecture 5.
+class QGramIndex {
+  // The q used for this index.
+  int q;
+
+  // The inverted lists of this index. Maps each q-gram that occurs in one of
+  // the entity names to a (continuous) integer id of the entity (do NOT use 
+  // the ids given in the entity file here, as they are not integer values and
+  // not continuously).
+  Map<String, Array<int>> invertedLists;
+
+  // The entities, as given in the entity file.
+  Array<Entity> entities;
+
+  // Build a q-gram index from the entity names of the given file. The expected
+  // file format is one line per entity with tab-separated columns. The first
+  // column contains the entity name (needed for indexing), the second column 
+  // a popularity score (needed for ranking), the third column a short
+  // description of the entity (needed only to enrich the output) and
+  // the remaining columns some additional information about the entity (needed
+  // only for some optional stuff). The first line contains a header with a
+  // short description of each column.
+  //
+  // Before computing the q-grams, normalize each string by lowercasing
+  // and removing all non-word characters (including whitespace) as shown in
+  // the lecture.
+  //
+  // Pay attention to either keep duplicates in the lists or keep a count of
+  // the number of each id, e.g. represented by a pair (id, num).
+  //
+  // TEST CASE:
+  //   QGramIndex index(3);
+  //   index.buildFromFile("example.tsv");
+  //   index.invertedLists;
+  // RESULT:
+  //   {
+  //     "$$b": [2],
+  //     "$$f": [1],
+  //     "$br": [2],
+  //     "$fr": [1],
+  //     "bre": [2],
+  //     "fre": [1],
+  //     "rei": [1, 2]
+  //   }
+  //   OR
+  //   {
+  //     "$$b": [(2, 1)],
+  //     "$$f": [(1, 1)],
+  //     "$br": [(2, 1)],
+  //     "$fr": [(1, 1)],
+  //     "bre": [(2, 1)],
+  //     "fre": [(1, 1)],
+  //     "rei": [(1, 1), (2, 1)]
+  //   }
+  //
+  // TEST CASE:
+  //   QGramIndex index(3);
+  //   index.buildFromFile("example.tsv");
+  //   index.entities;
+  // RESULT:
+  //   [
+  //     Entity(name="frei", score=3, description="a word"),
+  //     Entity(name="brei", score=2, description="another word")
+  //   ]
+  void buildFromFile(String path);
+
+  // Merge the given inverted lists. Pay attention to either keep duplicates in
+  // the result list or keep a count of the number of each id.
+  //
+  // NOTE: It is ok, if you do this merging by simply concatenating the lists
+  // and then sort the concatenation. That is, you do not have to make use of
+  // the fact, that the lists are already sorted.
+  // 
+  // TEST CASE:
+  //   mergeLists([1, 1, 3, 5], [2, 3, 3, 9, 9]);
+  // RESULT:
+  //   [1, 1, 2, 3, 3, 3, 5, 9, 9]
+  //   OR
+  //   [(1, 2), (2, 1), (3, 3), (5, 1), (9, 2)]
+  Array<int> mergeLists(Array<Array<int>> lists);
+  OR
+  Array<Pair<int,int>> mergeLists(Array<Array<int>> lists);
+
+  // Compute the prefix edit distance of the two given strings x and y and
+  // return it if it is smaller or equal to the given δ. Otherwise return δ + 1.
+  //
+  // NOTE: The method must run in time O(|x| * (|x| + δ)), as explained in the
+  // lecture.
+  // 
+  // TEST CASE:
+  //   prefixEditDistance("frei", "frei", 0);
+  // RESULT:
+  //   0
+  //
+  // TEST CASE:
+  //   prefixEditDistance("frei", "freiburg", 0);
+  // RESULT:
+  //   0
+  //
+  // TEST CASE:
+  //   prefixEditDistance("frei", "breifurg", 1);
+  // RESULT:
+  //   1
+  //
+  // TEST CASE:
+  //   prefixEditDistance("freiburg", "stuttgart", 2);
+  // RESULT:
+  //   3
+  int prefixEditDistance(String x, String y, int delta);
+
+  // Find all entities y with PED(x, y) ≤ δ for the given string x and a given 
+  // integer δ. First use the q-gram index to exclude all entities that do not
+  // have a sufficient number of q-grams in common with x, as explained in the
+  // lecture. Then, compute the PED only for the remaining candidate entities.
+  // The method should record the number of PED computations as well. Return a
+  // pair (matches, num_ped_computations), where (1) 'matches' is a list of
+  // (entity, ped) pairs, where 'entity' is a matching entity y with
+  // PED(x, y) ≤ δ and 'ped' is the actual PED value; (2) 'num_ped_computations'
+  // is the number of PED computations done while computing the result.
+  //
+  // TEST CASE:
+  //   QGramIndex index(3);
+  //   index.buildFromFile("example.tsv");
+  //   index.findMatches("frei", 0);
+  // RESULT:
+  //   ([(Entity(name="frei", score=3, description="a word"), 0)], 1)
+  //
+  // TEST CASE:
+  //   QGramIndex index(3);
+  //   index.buildFromFile("example.tsv");
+  //   index.findMatches("frei", 2);
+  // RESULT:
+  //   ([(Entity(name="frei", score=3, description="a word"), 0), 
+  //     (Entity(name="brei", score=2, description="another word"), 1)], 2)
+  //
+  // TEST CASE:
+  //   QGramIndex index(3);
+  //   index.buildFromFile("example.tsv");
+  //   index.findMatches("freibu", 2);
+  // RESULT:
+  //   ([(Entity(name="frei", score=3, description="a word"), 2)], 2)
+  Pair<Array<Pair<Entity, int>>, int> findMatches(String x, int delta);
+
+  // Rank the given set of pairs (entity, ped) by (ped, s), where ped is the
+  // computed PED value and s is the popularity score of an entity. That is, all
+  // entities with PED = 0 should come before all entities with PED = 1, etc.
+  // And the entities with the same PED should be sorted by score (higher score
+  // first).
+  //
+  // TEST CASE:
+  //   rankMatches([
+  //     (Entity(name="foo", score=3, description="word 0"), 2),
+  //     (Entity(name="bar", score=7, description="word 1"), 0),
+  //     (Entity(name="baz", score=2, description="word 2"), 1),
+  //     (Entity(name="boo", score=5, description="word 3"), 1)
+  //   ]);
+  // RESULT:
+  //   [
+  //     (Entity(name="bar", score=7, description="word 1"), 0),
+  //     (Entity(name="boo", score=5, description="word 3"), 1),
+  //     (Entity(name="baz", score=2, description="word 2"), 1),
+  //     (Entity(name="foo", score=3, description="word 0"), 2)
+  //   ]
+  Array<Pair<Entity, int>> rankMatches(Array<Pair<Entity, int>> matches);
+
+  // Compute all q-grams of the given string. Don't forget to add the padding
+  // to the left side of the string.
+  //
+  // TEST CASE:
+  //   QGramIndex index(3);
+  //   index.computeQGrams("freiburg");
+  // RESULT:
+  //   ["$$f", "$fr", "fre", "rei", "eib", "ibu", "bur", "urg"]
+  Array<String> computeQGrams(String string);
+
+  // Normalize the given string (remove non-word characters and lower case). In
+  // the lecture, this was part of the qGrams method, but we also need it as a
+  // separate method when computing the EDs for the remaining candidates.
+  //
+  // TEST CASE:
+  //   normalize("freiburg");
+  // RESULT:
+  //   "freiburg"
+  //
+  // TEST CASE:
+  //   normalize("Frei, burg !!");
+  // RESULT:
+  //   "freiburg"
+  String normalize(String string);
+};
+
+// An entity in the q-gram index.
+class Entity {
+  // The name of the entity.
+  String name;
+
+  // The popularity score of the entity.
+  int score;
+
+  // The description of the entity.
+  String description;
+};
