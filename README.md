@@ -6,7 +6,7 @@ I happened to found this course about Information Retrieval(IR) from Youtube lon
 my playlist, as usual. Recently, I've just got started to work with ElasticSearch and want to get some background knowledge.
 So I take out this course from my playlist, and it turns out to be a great course.   
 
-All original materials are collected from GitHub and the course website, and I rewrite them using Go because
+All original materials are collected from GitHub and the course website. I rewrite the provided codes using Go because
 I use it for my daily work. If you found this repo useful, feel free to fork and play around with it. 
 
 ## Details
@@ -105,6 +105,6 @@ Result Table:
 ## References
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
 * [course wiki](https://ad-wiki.informatik.uni-freiburg.de/teaching/InformationRetrievalWS1718)
-* [lecture svn repo](https://daphne.informatik.uni-freiburg.de/ws1718/InformationRetrieval/svn-public/public/)
+* [lecture svn repo](https://daphne.informatik.uni-freiburg.de/ws1718/InformationRetrieval/svn-public/public/): codes, slides and exercises can be found here.
 * Text books
   * [Introduction to Information Retrieval](https://nlp.stanford.edu/IR-book/information-retrieval-book.html)
