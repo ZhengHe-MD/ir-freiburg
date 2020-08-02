@@ -1,0 +1,4 @@
+Movie	Animated movie.
+Movie	Non-animated film.
+Movie	Short animation.
+Movie	Short animated short film.

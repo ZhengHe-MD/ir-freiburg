@@ -8,7 +8,7 @@ import (
 
 const epsilon = 1E-04
 
-func TestInvertedIndex_ReIndexFromFile(t *testing.T) {
+func TestInvertedIndex_ReadFromFile(t *testing.T) {
 	tests := []struct {
 		givenFilename     string
 		givenBM25B        float64

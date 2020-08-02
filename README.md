@@ -105,7 +105,7 @@ Result Table:
 
 Lecture 06 and 07 are mostly about the html, javascript and css stuff, which I've been familiar with. So I decide to skip these two lectures. There is a very clear and intuitive discussion about UTF-8 in lecture 07, the dominant encoding scheme in the web, and it's worth reading. Though the content is located in the slides of lecture 07, the teacher actually walks though that in the beginning of lecture 08.
 
-### Lecture 08 🚧
+### Lecture 08 ✅
 
 * Vector Space Model (VSM)
   * dot product of query vector and term-document matrix
@@ -115,6 +115,22 @@ Lecture 06 and 07 are mostly about the html, javascript and css stuff, which I'v
   * normalization (similar to idf part from BM25)
     * L1-norm: sum of the absolutes of the entries
     * L2-norm: sum of the squares of the entries
+
+I use the library [james-bowman/sparse](github.com/james-bowman/sparse) to do the sparse matrix stuff. The benchmarking result shows that BM25 without normalization is still the best one, and the following list shows the config setup from best to worst: (BM params are fixed to b = 0.75, k = 1.25)
+
+| Score Type | Normalization | MAP   |
+| ---------- | ------------- | ----- |
+| BM25       | None          | 0.318 |
+| BM25       | L2            | 0.191 |
+| TF.IDF     | None          | 0.191 |
+| TF.IDF     | L2            | 0.157 |
+| BM25       | L1            | 0.054 |
+| TF         | None          | 0.051 |
+| TF.IDF     | L1            | 0.050 |
+| TF         | L2            | 0.050 |
+| TF         | L1            | 0.031 |
+
+I think it's because BM25 takes the length of documents into account while VSM doesn't do that, and [the Google paper](http://infolab.stanford.edu/~backrub/google.html) also claims that VSM tends to rank shorter documents higher.
 
 ## References
 

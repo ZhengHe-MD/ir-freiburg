@@ -1,0 +1,81 @@
+// Copyright 2017, University of Freiburg,
+// Chair of Algorithms and Data Structures.
+// Authors: Hannah Bast <bast@cs.uni-freiburg.de>,
+//          Patrick Brosi <brosi@cs.uni-freiburg.de>,
+//          Claudius Korzen <korzen@cs.uni-freiburg.de>
+
+// An extended version of the inverted index of ES2 that uses Vector Space
+// Models. Please note that the TIP-file from ES2 still holds and that the
+// methods and tests specified there have to be implemented and working!
+// In this TIP file, only additional or changed methods are listed.
+class InvertedIndex
+
+  // Compute the sparse term-document matrix from the inverted lists computed
+  // by the read_from_file() method of ES2. For Exercise 2, add a boolean flag
+  // "l2normalize" that normalizes the matrix with respect to the L^2-norm if
+  // is it set to true. The L^2-norm for a column (x1, ..., xn) is given by
+  // sqrt(sum_i x_i^2), where the squares of the entries of a column should sum
+  // up to 1.
+  //
+  // NOTE: for the tests below, use .todense().tolist() to convert your sparse
+  // matrix into a list for testing. You can sort this list for reproducible
+  // results (the row order will depend on the order you process your terms).
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.read_from_file("example.txt", b=0, k=Infinity)
+  //   ii.preprocessing_vsm(l2normalize=False)
+  //   ii.td_matrix
+  // RESULT:
+  //   [[0.415 0.415 0.000 0.415],
+  //    [0.000 0.000 2.000 0.000],
+  //    [0.000 1.000 0.000 1.000],
+  //    [0.000 0.000 0.000 0.000],
+  //    [0.000 2.000 0.000 0.000],
+  //    [0.000 0.000 1.000 2.000]]
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.read_from_file("example.txt", b=0.75, k=1.75)
+  //   ii.preprocessing_vsm(l2normalize=True)
+  //   ii.td_matrix
+  // RESULT:
+  //   [[1.000 0.182 0.000 0.222],
+  //    [0.000 0.000 0.894 0.000],
+  //    [0.000 0.440 0.000 0.535],
+  //    [0.000 0.000 0.000 0.000],
+  //    [0.000 0.879 0.000 0.000],
+  //    [0.000 0.000 0.447 0.815]]
+  void preprocessing_vsm(bool l2normalize)
+
+  // Process the given keyword query as in the process_query() method of
+  // ES2, but by using VSM.
+  //
+  // As for ES2, if you want to implement some ranking refinements, make these
+  // refinements optional (their use should be controllable via a
+  // 'use_refinements' flag).
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.inverted_lists = {
+  //     "foo": [(1, 0.2), (3, 0.6)],
+  //     "bar": [(1, 0.4), (2, 0.7), (3, 0.5)]
+  //     "baz": [(2, 0.1)]
+  //   }
+  //   ii.preprocessing_vsm(l2normalize=False)
+  //   ii.process_query_vsm("foo bar", use_refinements=False)
+  // RESULT:
+  //   [(3, 1.1), (2, 0.7), (1, 0.6)]
+  //
+  // TEST CASE:
+  //   InvertedIndex ii
+  //   ii.inverted_lists = {
+  //     "foo": [(1, 0.2), (3, 0.6)],
+  //     "bar": [(2, 0.4), (3, 0.1), (4, 0.8)]
+  //   }
+  //   ii.preprocessing_vsm(l2normalize=False)
+  //   ii.process_query_vsm("foo bar foo bar", use_refinements=False)
+  // RESULT:
+  //   [(4, 1.6), (3, 1.4), (2, 0.8), (1, 0.4)]
+  //
+  Array<Tuple<int, float>> process_query_vsm(String query, bool use_refinements)

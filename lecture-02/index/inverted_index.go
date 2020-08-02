@@ -50,7 +50,7 @@ func (ii *InvertedIndex) GetDocByID(id int64) Doc {
 // Construct the inverted index from the given file. The expected format of
 // the file is one document per line, in the format <title>TAB<description>.
 // Each entry in the inverted list associated to a word should contain a
-// document id and a BM25 score. Compute the BM25 scores as follows:
+// document id and a Score score. Compute the Score scores as follows:
 //
 // (1) In a first pass, compute the inverted lists with tf scores (that
 //     is the number of occurrences of the word within the <title> and the
@@ -59,8 +59,8 @@ func (ii *InvertedIndex) GetDocByID(id int64) Doc {
 //     the <description> of a document). Afterwards, compute the average
 //     document length (AVDL).
 // (2) In a second pass, iterate each inverted list and replace the tf scores
-//     by BM25 scores, defined as:
-//     BM25 = tf * (k+1) / (k * (1 - b + b * DL / AVDL) + tf) * log2(N/df),
+//     by Score scores, defined as:
+//     Score = tf * (k+1) / (k * (1 - b + b * DL / AVDL) + tf) * log2(N/df),
 //     where N is the total number of documents and df is the number of
 //     documents that contains the word.
 //
@@ -124,7 +124,7 @@ func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64, opt
 	avdl := float64(docLenSum) / docNum
 	for _, postings := range invertedList {
 		for i, posting := range postings {
-			// BM25 = tf * (k+1) / (k * (1 - b + b * DL / AVDL) + tf) * log2(N/df)
+			// Score = tf * (k+1) / (k * (1 - b + b * DL / AVDL) + tf) * log2(N/df)
 			tf := posting.BM25
 
 			var dl = float64(docs[posting.DocID].DL)
@@ -142,7 +142,7 @@ func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64, opt
 	return
 }
 
-// getRoundedInvertedIndex round the BM25 score to 3 digits precision
+// getRoundedInvertedIndex round the Score score to 3 digits precision
 func (ii *InvertedIndex) getRoundedInvertedIndex() (ret map[string][]Posting) {
 	ret = make(map[string][]Posting)
 	for word, Postings := range ii.invertedLists {

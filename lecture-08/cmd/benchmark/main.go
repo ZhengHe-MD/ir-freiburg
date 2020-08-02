@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/ZhengHe-MD/ir-freiburg.git/lecture-02/evaluator"
-	"github.com/ZhengHe-MD/ir-freiburg.git/lecture-02/index"
+	"github.com/ZhengHe-MD/ir-freiburg.git/lecture-08/evaluator"
+	"github.com/ZhengHe-MD/ir-freiburg.git/lecture-08/index"
 	"log"
 	"os"
 )
@@ -15,7 +15,7 @@ func main() {
 	}
 
 	datasetFilename, benchmarkFilename := os.Args[1], os.Args[2]
-	options := index.RefinementOptions{ExcludingStopWords: true}
+	options := index.RefinementOptions{ExcludingStopWords: false, RankingScore: index.RankingScoreTF}
 
 	ii := index.NewInvertedIndex()
 	err := ii.ReadFromFile(datasetFilename, 0.75, 1.25, options)
@@ -28,6 +28,7 @@ func main() {
 		return
 	}
 
+	ii.PreprocessingVSM(index.L2)
 	benchmark, err := evaluator.ReadBenchmark(benchmarkFilename)
 	if err != nil {
 		log.Println(err)
