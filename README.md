@@ -99,10 +99,14 @@ Result Table:
 |-------|------|------|------|----------|---------------|
 | the   | 199ms| 139  | 139  | Go       | 2.7 GHz Dual-Core Intel Core i5 |
 | breib | 830ms| 189857 | 279 | Go      | 2.7 GHz Dual-Core Intel Core i5 |
-| the BIG lebauski | 133ms | 669 | 1 | Go | 2.7 GHz Dual-Core Intel Core i5 | 
+| the BIG lebauski | 133ms | 669 | 1 | Go | 2.7 GHz Dual-Core Intel Core i5 |
 
+### Lecture 06-07 ❌
+
+Lecture 06 and 07 are mostly about html, javascript and css stuff, which I've been familiar with. So I decide to skip these two. There is a very clear and intuitive discussion about UTF-8, the dominant encoding scheme in the web, and it's worth reading. Though the content is located in the slides of lecture 07, the teacher actually walk though that in the beginning of lecture 08.
 
 ## References
+
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
 * [course wiki](https://ad-wiki.informatik.uni-freiburg.de/teaching/InformationRetrievalWS1718)
 * [lecture svn repo](https://daphne.informatik.uni-freiburg.de/ws1718/InformationRetrieval/svn-public/public/): codes, slides and exercises can be found here.
