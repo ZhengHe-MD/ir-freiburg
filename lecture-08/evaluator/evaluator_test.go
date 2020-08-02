@@ -142,8 +142,10 @@ func TestEvaluate(t *testing.T) {
 
 	for _, tt := range tests {
 		ii := index.NewInvertedIndex()
-		err := ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K, index.RefinementOptions{})
+		err := ii.ReadFromFile(tt.givenFilename, tt.givenBM25B, tt.givenBM25K, index.RefinementOptions{RankingScore: index.RankingScoreBM25})
 		assert.NoError(t, err)
+
+		ii.PreprocessingVSM(index.None)
 
 		benchmark, err := ReadBenchmark(tt.givenBenchmarkFilename)
 		assert.NoError(t, err)
