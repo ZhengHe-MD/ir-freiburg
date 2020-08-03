@@ -117,7 +117,7 @@ func TestInvertedIndex_PreprocessingVSM(t *testing.T) {
 		},
 		{
 			"example.txt",
-			0.75, 1.75, L2,
+			0.75, 1.75, ColumnWiseL2,
 			mat.NewDense(6, 4, []float64{
 				0.000, 0.000, 0.000, 0.000,
 				1.000, 0.182, 0.000, 0.222,

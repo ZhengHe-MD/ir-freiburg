@@ -116,21 +116,23 @@ Lecture 06 and 07 are mostly about the html, javascript and css stuff, which I'v
     * L1-norm: sum of the absolutes of the entries
     * L2-norm: sum of the squares of the entries
 
-I use the library [james-bowman/sparse](github.com/james-bowman/sparse) to do the sparse matrix stuff. The benchmarking result shows that BM25 without normalization is still the best one, and the following list shows the config setup from best to worst: (BM params are fixed to b = 0.75, k = 1.25)
+I use the library [james-bowman/sparse](github.com/james-bowman/sparse) to do the sparse matrix stuff. The following list shows the benchmarking results of different config setup from best to worst: (BM params are fixed to b = 0.75, k = 1.25). 
 
 | Score Type | Normalization | MAP   |
 | ---------- | ------------- | ----- |
 | BM25       | None          | 0.318 |
-| BM25       | L2            | 0.191 |
-| TF.IDF     | None          | 0.191 |
+| BM25WithoutIDF | Row-wise L2 | 0.295 |
+| BM25WithoutIDF | Row-wise L1 | 0.210 |
+| BM25       | L2           | 0.191 |
+| TF.IDF     | None          | 0.190 |
+| BM25WithoutIDF | None | 0.175 |
 | TF.IDF     | L2            | 0.157 |
 | BM25       | L1            | 0.054 |
-| TF         | None          | 0.051 |
 | TF.IDF     | L1            | 0.050 |
-| TF         | L2            | 0.050 |
-| TF         | L1            | 0.031 |
 
-I think it's because BM25 takes the length of documents into account while VSM doesn't do that, and [the Google paper](http://infolab.stanford.edu/~backrub/google.html) also claims that VSM tends to rank shorter documents higher.
+The row-wise normalization is like the idf part of BM25, and the column-wise normalization is like the part manipulating k and b, that try to take documents of different lengths equally. So I only tried BM25WithoutIDF with row-wise normalization and TF.IDF with column-wise normalization.
+
+The benchmarking result shows that BM25 without normalization is still the best one. I think it's because BM25 takes the length of documents into account while VSM doesn't do that well, and [the Google paper](http://infolab.stanford.edu/~backrub/google.html) also claims that VSM tends to rank shorter documents higher.
 
 ## References
 

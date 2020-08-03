@@ -28,7 +28,7 @@ func main() {
 		return
 	}
 
-	ii.PreprocessingVSM(index.L2)
+	ii.PreprocessingVSM(index.ColumnWiseL2)
 	benchmark, err := evaluator.ReadBenchmark(benchmarkFilename)
 	if err != nil {
 		log.Println(err)

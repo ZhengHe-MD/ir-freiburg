@@ -148,7 +148,7 @@ func (ii *InvertedIndex) ReadFromFile(filename string, bm25B, bm25K float64, opt
 				} else {
 					postings[i].Score = tf * (bm25K + 1) / (bm25K*(1-bm25B+bm25B*dl/avdl) + tf) * idf
 				}
-			case RankingscoreBM25WithoutIDF:
+			case RankingScoreBM25WithoutIDF:
 				var dl = float64(docs[posting.DocID].DL)
 				if math.IsInf(bm25K, 1) {
 					postings[i].Score = tf / (1 - bm25B + bm25B*dl/avdl)
@@ -188,8 +188,10 @@ type Normalization int
 
 const (
 	None Normalization = iota
-	L1
-	L2
+	ColumnWiseL1
+	ColumnWiseL2
+	RowWiseL1
+	RowWiseL2
 )
 
 // preprocessingVSM preprocess the invertedList to build a term-document matrix
@@ -204,7 +206,7 @@ func (ii *InvertedIndex) PreprocessingVSM(normalization Normalization) {
 				ii.tdMatrix.Set(termID, docID, posting.Score)
 			}
 		}
-	case L1:
+	case ColumnWiseL1:
 		normalizer := make(map[int]float64, ii.numDocs)
 		for termID, term := range ii.terms {
 			for _, posting := range ii.invertedLists[term] {
@@ -217,7 +219,20 @@ func (ii *InvertedIndex) PreprocessingVSM(normalization Normalization) {
 		ii.tdMatrix.DoNonZero(func(i, j int, v float64) {
 			ii.tdMatrix.Set(i, j, v/normalizer[j])
 		})
-	case L2:
+	case RowWiseL1:
+		normalizer := make(map[int]float64, ii.numTerms)
+		for termID, term := range ii.terms {
+			for _, posting := range ii.invertedLists[term] {
+				docID := int(posting.DocID - 1)
+				ii.tdMatrix.Set(termID, docID, posting.Score)
+				normalizer[termID] += posting.Score
+			}
+		}
+
+		ii.tdMatrix.DoNonZero(func(i, j int, v float64) {
+			ii.tdMatrix.Set(i, j, v/normalizer[i])
+		})
+	case ColumnWiseL2:
 		normalizer := make(map[int]float64, ii.numDocs)
 		for termID, term := range ii.terms {
 			for _, posting := range ii.invertedLists[term] {
@@ -233,6 +248,23 @@ func (ii *InvertedIndex) PreprocessingVSM(normalization Normalization) {
 
 		ii.tdMatrix.DoNonZero(func(i, j int, v float64) {
 			ii.tdMatrix.Set(i, j, v/normalizer[j])
+		})
+	case RowWiseL2:
+		normalizer := make(map[int]float64, ii.numTerms)
+		for termID, term := range ii.terms {
+			for _, posting := range ii.invertedLists[term] {
+				docID := int(posting.DocID - 1)
+				ii.tdMatrix.Set(termID, docID, posting.Score)
+				normalizer[termID] += posting.Score * posting.Score
+			}
+		}
+
+		for termID, squareSum := range normalizer {
+			normalizer[termID] = math.Sqrt(squareSum)
+		}
+
+		ii.tdMatrix.DoNonZero(func(i, j int, v float64) {
+			ii.tdMatrix.Set(i, j, v/normalizer[i])
 		})
 	}
 

@@ -51,7 +51,7 @@ const (
 	RankingScoreTF             RankingScore = 1
 	RankingScoreTFIDF                       = 2
 	RankingScoreBM25                        = 3
-	RankingscoreBM25WithoutIDF              = 4
+	RankingScoreBM25WithoutIDF              = 4
 )
 
 type RefinementOptions struct {
