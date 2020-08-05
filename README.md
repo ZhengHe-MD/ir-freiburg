@@ -134,6 +134,38 @@ The row-wise normalization is like the idf part of BM25, and the column-wise nor
 
 The benchmarking result shows that BM25 without normalization is still the best one. I think it's because BM25 takes the length of documents into account while VSM doesn't do that well, and [the Google paper](http://infolab.stanford.edu/~backrub/google.html) also claims that VSM tends to rank shorter documents higher.
 
+### Lecture 09 🚧
+
+* Clustering
+  * The number of clusters is given as part of the input (k)
+  * Goal:
+    * Intra-cluster distances are as small as possible 
+    * Inter-cluster distances are as large as possible
+  * Centroid: intuitively, a centroid is a single element from the metric space that "represents" the cluster
+  * RSS: residual sum of squares
+* K-Means
+  * Idea: find a local optimum of the RSS by greedily minimizing it in every step
+  * Steps:
+    * Initialization: pick a set of centroids (for example, pick a random subset from the input)
+    * Alternate between the following 2 steps
+        * A: Assign each element to its nearest centroid
+        * B: Compute new centroids as average of elems assigned to it
+  * Termination conditions, options
+    * when no more change in clustering (optimal, but this can take a very long time)
+    * after a fixed number of iterations (easy, but how to guess the right number)
+    * when RSS falls below a given threshold (reasonable, but RSS may never fall below that threshold)
+    * when decrease in RSS falls below a given threshold (reasonable, stop when when we are close to convergence)
+  * Choice of a good k
+    * choose the k with smallest RSS (bad idea, because RSS is minimized for k = n)
+    * choose the k with smallest RSS + λ * k (make sense)
+  * When is K-Means a good clustering algorithm
+    * K-Means tends to produce compact clusters of about equal size
+  * Alternatives
+    * K-Medoids
+    * Fuzzy k-means
+    * EM-Algorithm
+* K-Means for Text Documents
+
 ## References
 
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
