@@ -134,7 +134,7 @@ The row-wise normalization is like the idf part of BM25, and the column-wise nor
 
 The benchmarking result shows that BM25 without normalization is still the best one. I think it's because BM25 takes the length of documents into account while VSM doesn't do that well, and [the Google paper](http://infolab.stanford.edu/~backrub/google.html) also claims that VSM tends to rank shorter documents higher.
 
-### Lecture 09 🚧
+### Lecture 09 ✅
 
 * Clustering
   * The number of clusters is given as part of the input (k)
