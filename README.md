@@ -166,6 +166,32 @@ The benchmarking result shows that BM25 without normalization is still the best 
     * EM-Algorithm
 * K-Means for Text Documents
 
+### Lecture 10 ✅
+* Latent Semantic Indexing
+  * Motivation: synonyms and polysem, add the missing synonyms to the documents automagically.
+  * Goal: 
+    * Given a term-document matrix A and k < rank(A)
+    * Then find a matrix A' of (column) rank k such that the difference between A' and A is as small as possible.
+  * How: SVD (singular value decomposition)
+    * A = U * S * V
+    * For a given k < rank(A) let
+      * U_k = the first k columns of U, column-orthonormal
+      * S_k = the upper k x k part of S
+      * V_k = the first k rows of V
+    * A_k = U_k * S_k * V_k
+    * Complexity: Lanczos method has complexity O(k*nnz), k is the rank and nnz means the number of non-zero values in the matrix.
+* Computing the SVD
+  * EVD
+  * EVD => SVD
+* Using LSI for better Retrieval
+  * Variants
+    * Variant 1: work with A_k instead of A, but A_k is a dense matrix, O(m*m*n)
+    * Variant 2: work with V_k instead of A
+      * map the query to concept space
+      * work with v_k instead of A
+    * Variant 3: expand the original documents
+  * Linear combination with original scores in practice
+
 ## References
 
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
