@@ -7,7 +7,9 @@ my playlist, as usual. Recently, I've just got started to work with ElasticSearc
 So I take out this course from my playlist, and it turns out to be a great course.   
 
 All original materials are collected from GitHub and the course website. I rewrite the provided codes using Go because
-I use it for my daily work. If you found this repo useful, feel free to fork and play around with it. 
+I use it for my daily work. If you found this repo useful, feel free to fork and play around with it. All paper and pencil solutions
+are written in markdown by myself, and I also provide pdf version for each. Note that the markdown editor I use for solutions
+is [typora](typora.io).
 
 ## Details
 
