@@ -194,6 +194,23 @@ The benchmarking result shows that BM25 without normalization is still the best 
     * Variant 3: expand the original documents
   * Linear combination with original scores in practice
 
+### Lecture 11 🚧
+
+* Classification
+  * Objects/Classes
+  * Training/Prediction
+  * Difference to K-means
+    * no cluster names
+    * no learning/training phase
+    * soft clustering
+  * Evaluation: Precision/Recall/F-measure
+* Probability recap
+  * Maximum Likelihood Estimation (MLE)
+  * Conditional probabilities, Bayes Theorem
+* Naive Bayes
+  * Theoretial: Assumptions/Learning phase/Prediction
+  * Practical: Smoothing/Numerical stability/Linear Algebra (LA)
+
 ## References
 
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
