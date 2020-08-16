@@ -194,7 +194,7 @@ The benchmarking result shows that BM25 without normalization is still the best 
     * Variant 3: expand the original documents
   * Linear combination with original scores in practice
 
-### Lecture 11 🚧
+### Lecture 11 ✅
 
 * Classification
   * Objects/Classes
@@ -210,6 +210,42 @@ The benchmarking result shows that BM25 without normalization is still the best 
 * Naive Bayes
   * Theoretial: Assumptions/Learning phase/Prediction
   * Practical: Smoothing/Numerical stability/Linear Algebra (LA)
+
+| Name | Genres, Variant 1 | Genres, Variant 2 | Ratings, Variant 1 | Ratings, Variant 2 | Implemented Refinements |
+|------|-------------------|-------------------|--------------------|--------------------|-------------------------|
+| benchmark (ck1028) | F = 77.49% | F = 78.46% | F = 47.47% | F = 47.48% | None |
+| ZhengHe-MD | F = 76.91% | F = 79.19% | F = 47.49% | F = 47.18% | None |
+
+#### Top 20 Words
+
+##### Genres, Variant 1
+
+Horror  young house find woman family old group man night friends years soon dead life evil people death back horror girl 
+Drama   life young family father man mother old son wife story woman years lives time home girl daughter day finds year 
+Documentary     life documentary world people story years time family war journey year lives history young women many own day man work 
+Comedy  life man young wife family find father time old money friends girl daughter friend e day woman school decides way 
+Western gang town sheriff man ranch men father gold killed finds money cattle find brother marshal tom outlaw help son murder
+
+##### Genres, Variant 2
+
+Horror  young house woman family find man night old group years evil friends soon dead life death people back horror town 
+Western gang town sheriff man ranch men father gold killed finds cattle marshal brother bill outlaw money help steve find johnny 
+Comedy  man life wife young family money time find father old house decides son girl daughter wants finds friend town back 
+Drama   life young man old father family son mother wife story girl home year years time woman world lives school day 
+Documentary     life world documentary years people story time family war old journey history children young year day lives man women way
+
+##### Ratings, Variant 1
+
+R       life young man find family wife woman father old time finds years world friend back story friends own help way 
+PG-13   life man family young world find father time school old story mother years home back finds wife help woman year 
+PG      life young world man father old find family time town story help back finds boy year mother way years friends
+
+##### Ratings, Variant 2
+
+PG-13   life family man young world find father old story time mother school years finds son home wife back woman year 
+R       life man young find family finds father wife time old woman back world years friend help town way police soon 
+PG      life young father man old world find family time story town finds help year back boy way school years friends
+
 
 ## References
 
