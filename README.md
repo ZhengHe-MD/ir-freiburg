@@ -228,23 +228,23 @@ Western gang town sheriff man ranch men father gold killed finds money cattle fi
 
 ##### Genres, Variant 2
 
-Horror  young house woman family find man night old group years evil friends soon dead life death people back horror town 
-Western gang town sheriff man ranch men father gold killed finds cattle marshal brother bill outlaw money help steve find johnny 
-Comedy  man life wife young family money time find father old house decides son girl daughter wants finds friend town back 
-Drama   life young man old father family son mother wife story girl home year years time woman world lives school day 
-Documentary     life world documentary years people story time family war old journey history children young year day lives man women way
+* Horror:  young house woman family find man night old group years evil friends soon dead life death people back horror town 
+* Western: gang town sheriff man ranch men father gold killed finds cattle marshal brother bill outlaw money help steve find johnny 
+* Comedy:  man life wife young family money time find father old house decides son girl daughter wants finds friend town back 
+* Drama:   life young man old father family son mother wife story girl home year years time woman world lives school day 
+* Documentary:     life world documentary years people story time family war old journey history children young year day lives man women way
 
 ##### Ratings, Variant 1
 
-R       life young man find family wife woman father old time finds years world friend back story friends own help way 
-PG-13   life man family young world find father time school old story mother years home back finds wife help woman year 
-PG      life young world man father old find family time town story help back finds boy year mother way years friends
+* R:       life young man find family wife woman father old time finds years world friend back story friends own help way 
+* PG-13:   life man family young world find father time school old story mother years home back finds wife help woman year 
+* PG:      life young world man father old find family time town story help back finds boy year mother way years friends
 
 ##### Ratings, Variant 2
 
-PG-13   life family man young world find father old story time mother school years finds son home wife back woman year 
-R       life man young find family finds father wife time old woman back world years friend help town way police soon 
-PG      life young father man old world find family time story town finds help year back boy way school years friends
+* PG-13:   life family man young world find father old story time mother school years finds son home wife back woman year 
+* R:       life man young find family finds father wife time old woman back world years friend help town way police soon 
+* PG:      life young father man old world find family time story town finds help year back boy way school years friends
 
 
 ## References
