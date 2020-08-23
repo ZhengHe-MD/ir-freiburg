@@ -1,0 +1,79 @@
+// Copyright 2018, University of Freiburg,
+// Chair of Algorithms and Data Structures.
+// Author: Claudius Korzen <korzen@cs.uni-freiburg.de>.
+
+// A simple SPARQL engine for a SQLite backend.
+class SPARQL:
+
+  // Translates the given SPARQL query to a corresponding SQL query.
+  //
+  // PLEASE NOTE: there are many ways to express the same SPARQL query in SQL.
+  // Stick to the implementation advice given in the lecture. Thus, in case of
+  // your formatting, the name of your variables / columns or the ordering
+  // differs, feel free to adjust the syntax (but not the semantics) of the
+  // test case.
+  //
+  // The SPARQL query in the test below lists all films that won the "Academy
+  // Award for Best Picture" directed by a german director.
+  //
+  // TEST CASE:
+  //   sparql_to_sql(
+  //       "SELECT ?f ?p WHERE { 
+  //           ?f \"instance of\" \"film\" .
+  //           ?f \"award received\" \"Academy Award for Best Picture\" .
+  //           ?f \"director\" ?p .
+  //           ?p \"country of citizenship\" \"Germany\"
+  //       }"
+  //   )
+  //
+  // RESULT:
+  //   SELECT f0.subject,
+  //          f2.object
+  //   FROM   wikidata as f0,
+  //          wikidata as f1,
+  //          wikidata as f2,
+  //          wikidata as f3
+  //   WHERE  f0.object="film"
+  //          AND f0.predicate="instance of"
+  //          AND f1.object="Academy Award for Best Picture"
+  //          AND f1.predicate="award received"
+  //          AND f2.predicate="director"
+  //          AND f2.subject=f0.subject
+  //          AND f2.subject=f1.subject
+  //          AND f3.object="Germany"
+  //          AND f3.predicate="country of citizenship"
+  //          AND f3.subject=f2.object;
+  String sparql_to_sql(String sparql)
+
+  // Runs the given SQL query against the given instance of a SQLite3 database
+  // and returns the result rows.
+  //
+  // Note: The SQL query in the test below is the same as in the test for the
+  // sparql_to_sql() method.
+  // 
+  // TEST CASE:
+  //   db = sqlite3.connect("example.db")
+  //   sql_query = sparql_to_sql(
+  //       "SELECT ?f ?p WHERE {
+  //           ?f \"instance of\" \"film\" .
+  //           ?f \"award received\" \"Academy Award for Best Picture\" .
+  //           ?f \"director\" ?p .
+  //           ?p \"country of citizenship\" \"Germany\"
+  //       }"
+  //   )
+  //   process_sql_query(db, sql_query)
+  //
+  // RESULT:
+  //   [("The Life of Emile Zola", "William Dieterle")]
+  List<Row> process_sql_query(Database db, String sql)
+
+
+// The main method that starts the SPARQL engine. Proceeds as follows:
+//
+// 1. Reads the path to the SQLite3 database from the command line arguments
+//    (e.g., "wikidata.db")
+// 2. Reads the SPARQL query to process from the command line.
+// 3. Translates the SPARQL query to an SQL query by calling sparql_to_sql().
+// 4. Runs the SQL query against the database by calling process_sql_query().
+// 5. Outputs the result rows.
+void main(String[] args)

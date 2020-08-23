@@ -7,6 +7,7 @@ my playlist, as usual. Recently, I've just got started to work with ElasticSearc
 So I take out this course from my playlist, and it turns out to be a great course.   
 
 All original materials are collected from GitHub and the course website. I rewrite the provided codes using Go because
+
 I use it for my daily work. If you found this repo useful, feel free to fork and play around with it. All paper and pencil solutions
 are written in markdown by myself, and I also provide pdf version for each. Note that the markdown editor I use for solutions
 is [typora](typora.io).
@@ -246,6 +247,114 @@ Western gang town sheriff man ranch men father gold killed finds money cattle fi
 * R:       life man young find family finds father wife time old woman back world years friend help town way police soon 
 * PG:      life young father man old world find family time story town finds help year back boy way school years friends
 
+### Lecture 12 ✅
+
+* Knownledge Bases and SPARQL
+  * Entities and their relations
+  * Relation to the "Semantic Web"
+  * SPARQL:
+    * SPARQL Protocol And RDF Query Language
+    * SPARQL queries as subgraphs
+* Databases and SQL
+* SQLite
+* SPARQL to SQL Translation
+* Performance
+  * Cross product
+  * Join/Join ordering
+
+Exercise：
+
+1. download and unzip data
+
+```sh
+$ wget http://ad-teaching.informatik.uni-freiburg.de/InformationRetrievalWS1718/wikidata.zip && unzip wikidata.zip
+```
+
+2. load data into sqlite3 and create indexes
+
+```sh
+$ sqlite3 wikidata.db
+> CREATE TABLE (subject TEXT, predicate TEXT, object TEXT);
+> .separator "\t"
+> .import wikidata.tsv wikidata
+> CREATE INDEX idx_object ON wikidata(object);
+> CREATE INDEX idx_predicate ON wikidata(predicate);
+> CREATE INDEX idx_subject ON wikidata(subject);
+```
+
+3. SPARQL
+
+```sql
+# Find all female German computer scientists listed in Wikidata and where they studied
+
+SELECT ?x ?y WHERE {
+  ?x "sex or gender" "female" .
+  ?x "occupation" "computer scientist" .
+  ?x "country of citizenship" "Germany" .
+  ?x "educated at" ?y
+};
+
+# Find people from China
+
+SELECT ?x WHERE {
+	?x "instance of" "human"
+	?x "country of citizenship" "People's Republic of China"
+} LIMIT 10;
+```
+
+4. run the demo
+
+```sh
+$ go run sparql_to_sql.go ../wikidata.db
+Enter SparQL query:
+SELECT ?x ?y WHERE {
+  ?x "sex or gender" "female" .
+  ?x "occupation" "computer scientist" .
+  ?x "country of citizenship" "Germany" .
+  ?x "educated at" ?y
+}
+
+got sqlStmt:
+SELECT	f0.subject,
+	f3.object
+FROM	wikidata as f0,
+	wikidata as f1,
+	wikidata as f2,
+	wikidata as f3
+WHERE	f0.predicate="sex or gender"
+	AND f0.object="female"
+	AND f1.predicate="occupation"
+	AND f1.object="computer scientist"
+	AND f2.predicate="country of citizenship"
+	AND f2.object="Germany"
+	AND f3.predicate="educated at"
+	AND f3.subject=f0.subject
+	AND f3.subject=f1.subject
+	AND f3.subject=f2.subject
+;
+
+found 10 rows
+[["Monika Henzinger","Princeton University"],["Julia Kempe","University of California, Berkeley"],["Sabina Jeschke","Technical University of Berlin"],["Susanne Albers","Saarland University"],["Angelika Steger","Stony Brook University"],["Dorothea Wagner","RWTH Aachen University"],["Maria-Christine Fürstin von Urach","University of Stuttgart"],["Hannah Bast","Saarland University"],["Jessica Burgner-Kahrs","Karlsruhe Institute of Technology"],["Lydia Pintscher","Karlsruhe Institute of Technology"]]
+
+Enter SparQL query:
+SELECT ?x WHERE {
+	?x "instance of" "human" .
+	?x "country of citizenship" "People's Republic of China"
+} LIMIT 10;
+
+got sqlStmt:
+SELECT	f0.subject
+FROM	wikidata as f0,
+	wikidata as f1
+WHERE	f0.predicate="instance of"
+	AND f0.object="human"
+	AND f1.predicate="country of citizenship"
+	AND f1.object="People's Republic of China"
+	AND f1.subject=f0.subject
+LIMIT 10;
+found 10 rows
+[["Mao Zedong"],["Huang Xianfan"],["Tenzin Gyatso"],["Xi Jinping"],["Hu Jintao"],["Deng Xiaoping"],["Jet Li"],["Mo Yan"],["Gao Xingjian"],["Wen Jiabao"]]
+```
 
 ## References
 
