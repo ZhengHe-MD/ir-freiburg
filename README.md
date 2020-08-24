@@ -356,6 +356,20 @@ found 10 rows
 [["Mao Zedong"],["Huang Xianfan"],["Tenzin Gyatso"],["Xi Jinping"],["Hu Jintao"],["Deng Xiaoping"],["Jet Li"],["Mo Yan"],["Gao Xingjian"],["Wen Jiabao"]]
 ```
 
+### Lecture 13 🚧
+
+* Natural Language Processing
+  * Retrospection: so far in this course, none of our techniques actually tried to "understand" the language
+  * NLP is concerned with "understanding" language in a more "linguistic" sense
+  * Applications
+    * Information Extraction
+    * Entity Queries
+* Hidden Markov Model
+  * Markov Chain/Markov property
+  * Hidden Markov Model
+    * Given a HMM and a sequence of observed states, find the most likely sequence of hidden states.
+* Viterbi Algorithm
+
 ## References
 
 * [videos](https://www.youtube.com/playlist?list=PLfgMNKpBVg4V8GtMB7eUrTyvITri8WF7i)
