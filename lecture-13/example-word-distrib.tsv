@@ -1,0 +1,9 @@
+James	NNP	0.5
+James	NN	0.1
+James	OTHER	0.2
+Bond	NNP	0.5
+Bond	VB	0.2
+Bond	OTHER	0.2
+agent	NN	0.9
+is	VB	0.8
+an	OTHER	0.6

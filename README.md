@@ -356,7 +356,7 @@ found 10 rows
 [["Mao Zedong"],["Huang Xianfan"],["Tenzin Gyatso"],["Xi Jinping"],["Hu Jintao"],["Deng Xiaoping"],["Jet Li"],["Mo Yan"],["Gao Xingjian"],["Wen Jiabao"]]
 ```
 
-### Lecture 13 🚧
+### Lecture 13 ✅
 
 * Natural Language Processing
   * Retrospection: so far in this course, none of our techniques actually tried to "understand" the language
