@@ -1,4 +1,4 @@
-package main
+package ner
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -24,6 +24,17 @@ func TestNER_POSTag(t *testing.T) {
 				{"agent", "NN"},
 			},
 		},
+		{
+			"../ontonotes-transition-probabilities.tsv",
+			"../ontonotes-word-distribution.tsv",
+			[]string{"I", "hate", "Donald", "Trump"},
+			[]WordTag{
+				{"I", "PRP"},
+				{"hate", "VBP"},
+				{"Donald", "NNP"},
+				{"Trump", "NNP"},
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -45,11 +56,17 @@ func TestNER_FindNamedEntities(t *testing.T) {
 		givenSentence []string
 		wantNamedEntities []string
 	} {
+		//{
+		//	"./example-trans-probs.tsv",
+		//	"./example-word-distrib.tsv",
+		//	[]string{"James", "Bond", "is", "an", "agent"},
+		//	[]string{"James Bond"},
+		//},
 		{
-			"./example-trans-probs.tsv",
-			"./example-word-distrib.tsv",
-			[]string{"James", "Bond", "is", "an", "agent"},
-			[]string{"James Bond"},
+			"../ontonotes-transition-probabilities.tsv",
+			"../ontonotes-word-distribution.tsv",
+			[]string{"I", "hate", "Donald", "Trump"},
+			[]string{"Donald Trump"},
 		},
 	}
 

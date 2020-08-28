@@ -1,4 +1,4 @@
-package main
+package ner
 
 import (
 	"bufio"
@@ -137,7 +137,7 @@ func (m *NER) POSTag(sentence []string) (ret []WordTag, err error) {
 	}
 
 	// reverse
-	for i := 0; i <= len(ret)/2; i++ {
+	for i := 0; i < len(ret)/2; i++ {
 		j := len(ret)-i-1
 		ret[i], ret[j] = ret[j], ret[i]
 	}
@@ -177,6 +177,15 @@ func (m *NER) FindNamedEntities(sentence []string) (ret []string, err error) {
 				found = false
 			}
 		}
+	}
+
+	if found {
+		parts := make([]string, 0, len(wordTags)-li)
+		for j := li; j < len(wordTags); j++ {
+			parts = append(parts, wordTags[j].Word)
+		}
+		ret = append(ret, strings.Join(parts, " "))
+		found = false
 	}
 	return
 }
