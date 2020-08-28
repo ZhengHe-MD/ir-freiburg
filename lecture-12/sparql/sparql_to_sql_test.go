@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/stretchr/testify/assert"
+	"sort"
 	"strings"
 	"testing"
 	"unicode"
@@ -90,6 +91,12 @@ func TestSparQL_ProcessSQLQuery(t *testing.T) {
 		assert.NoError(t, err)
 		data, err := engine.ProcessSQLQuery(tt.givenDBName, sqlStmt)
 		assert.NoError(t, err)
+		for i := 0; i < len(tt.wantData); i ++ {
+			sort.Strings(tt.wantData[i])
+		}
+		for i := 0; i < len(data); i++ {
+			sort.Strings(data[i])
+		}
 		assert.Equal(t, tt.wantData, data)
 	}
 }
