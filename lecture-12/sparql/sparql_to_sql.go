@@ -174,7 +174,8 @@ func (m *SparQL) SparQLToSQL(sparQL string) (sqlStmt string, err error) {
 	sqlBuilder.WriteString("SELECT")
 	// NOTE: make tests stable
 	sort.Slice(selectList, func(i, j int) bool {
-		return strings.Compare(selectList[i].TableAlias, selectList[j].TableAlias) <= 0
+		return strings.Compare(selectList[i].TableAlias + selectList[i].Field,
+			                   selectList[j].TableAlias + selectList[j].Field) == 0
 	})
 	for i, selectClause := range selectList {
 		if i == len(selectList)-1 {
@@ -185,6 +186,11 @@ func (m *SparQL) SparQLToSQL(sparQL string) (sqlStmt string, err error) {
 	}
 
 	sqlBuilder.WriteString("FROM")
+	// NOTE: make tests stable
+	sort.Slice(fromList, func(i, j int) bool {
+		return strings.Compare(fromList[i].TableAlias + fromList[i].Source,
+			fromList[j].TableAlias + fromList[j].Source) == 0
+	})
 	for i, fromClause := range fromList {
 		if i == len(fromList)-1 {
 			sqlBuilder.WriteString(fmt.Sprintf("\t%s as %s\n", fromClause.Source, fromClause.TableAlias))
@@ -194,6 +200,11 @@ func (m *SparQL) SparQLToSQL(sparQL string) (sqlStmt string, err error) {
 	}
 
 	sqlBuilder.WriteString("WHERE")
+	sort.Slice(whereList, func(i, j int) bool {
+		return strings.Compare(whereList[i].Left + whereList[i].Op + whereList[i].Right,
+			whereList[j].Left + whereList[j].Op + whereList[j].Right) == 0
+	})
+
 	for i, whereClause := range whereList {
 		if i == 0 {
 			sqlBuilder.WriteString(fmt.Sprintf("\t%s%s%s\n",

@@ -1,4 +1,4 @@
-# Information Retrieval Course Notes ✅
+# Information Retrieval (WS 2017/2018) Course Notes ✅
 
 [![Build Status](https://travis-ci.org/ZhengHe-MD/ir-freiburg.svg?branch=master)](https://travis-ci.org/ZhengHe-MD/ir-freiburg)
 
@@ -11,6 +11,17 @@ All original materials are collected from GitHub and the course website. I rewri
 I use it for my daily work. If you found this repo useful, feel free to fork and play around with it. All paper and pencil solutions
 are written in markdown by myself, and I also provide pdf version for each. Note that the markdown editor I use for solutions
 is [typora](typora.io).
+
+## Contents of this Course
+
+* Indexing
+* Ranking
+* Compression
+* Error-tolerant search
+* Web app stuff
+* Machine learning
+* Knowledge bases
+* Evaluation
 
 ## Details
 
