@@ -1,4 +1,4 @@
-# Information Retrieval Course Notes
+# Information Retrieval Course Notes ✅
 
 [![Build Status](https://travis-ci.org/ZhengHe-MD/ir-freiburg.svg?branch=master)](https://travis-ci.org/ZhengHe-MD/ir-freiburg)
 
