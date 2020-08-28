@@ -9,6 +9,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"os"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -171,6 +172,10 @@ func (m *SparQL) SparQLToSQL(sparQL string) (sqlStmt string, err error) {
 	sqlBuilder := strings.Builder{}
 
 	sqlBuilder.WriteString("SELECT")
+	// NOTE: make tests stable
+	sort.Slice(selectList, func(i, j int) bool {
+		return strings.Compare(selectList[i].TableAlias, selectList[j].TableAlias) <= 0
+	})
 	for i, selectClause := range selectList {
 		if i == len(selectList)-1 {
 			sqlBuilder.WriteString(fmt.Sprintf("\t%s.%s\n", selectClause.TableAlias, selectClause.Field))
