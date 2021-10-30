@@ -113,7 +113,7 @@ Result Table:
 
 ### Lecture 06-07 ❌
 
-Lecture 06 and 07 are mostly about the html, javascript and css stuff, which I've been familiar with. So I decide to skip these two lectures. There is a very clear and intuitive discussion about UTF-8 in lecture 07, the dominant encoding scheme in the web, and it's worth reading. Though the content is located in the slides of lecture 07, the teacher actually walks though that in the beginning of lecture 08.
+Lecture 06 and 07 are mostly about the html, javascript and css stuff, which I've been familiar with. So I decide to skip these two lectures. There is a very clear and intuitive discussion about UTF-8 in lecture 07, the dominant encoding scheme in the web, and it's worth reading. Though the content is located in the slides of lecture 07, the teacher actually walks through that in the beginning of lecture 08.
 
 ### Lecture 08 ✅
 
