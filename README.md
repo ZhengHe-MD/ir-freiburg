@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ZhengHe-MD/ir-freiburg.svg?branch=master)](https://travis-ci.org/ZhengHe-MD/ir-freiburg)
 
-I happened to found this course about Information Retrieval(IR) from Youtube long time ago, and save it to 
+I happened to find this course about Information Retrieval(IR) from Youtube long time ago, and save it to 
 my playlist, as usual. Recently, I've just got started to work with ElasticSearch and want to get some background knowledge.
 So I take out this course from my playlist, and it turns out to be a great course.   
 
